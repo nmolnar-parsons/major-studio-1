@@ -72,7 +72,7 @@ for (var i = 0; i < names.length; i++) {
 console.log('museums', museums)
 
 var museums2 = {};
-names.forEach(function(/* COMPLETE ME*/) {
+names.forEach(function(/* COMPLETE ME*/) { // look up forEach on google - dummy comment for github pushing
   museums2[n] = {};
 
   var currentURL = URLs[i];
