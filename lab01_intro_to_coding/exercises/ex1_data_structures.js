@@ -33,8 +33,8 @@ var years = [
 // Task 1
 // Console log the length of each Array
 console.log(6)
-console.log(/* COMPLETE ME */)
-console.log(/* COMPLETE ME */)
+console.log(6)
+console.log(6)
 
 
 
@@ -44,9 +44,9 @@ var newName = "The International Center of Photography"
 var newURL = "icp.org"
 var newYear = 1974
 
-names.push(/* COMPLETE ME */);
-URLs[/* COMPLETE ME */] = newURL;
-years = years.concat(/* COMPLETE ME */);
+names.push(newName);
+URLs[6] = newURL; // index starts a 0, so 6 is the 7th item
+years = years.concat(newYear);
 
 // Task 3
 // construct an Object out of our three Arrays
@@ -60,9 +60,9 @@ var result = {
 
 var museums = {};
 for (var i = 0; i < names.length; i++) {
-  var currentName = names[/* COMPLETE ME */];
-  /* COMPLETE ME */ = URLs[i];
-  var currentYear = /* COMPLETE ME */;
+  var currentName = names[i];
+  var currentURL = URLs[i];
+  var currentYear = years[i];
 
   museums[currentName] = {};
   museums[currentName]["URL"] = currentURL;
