@@ -32,10 +32,10 @@ var years = [
 
 // Task 1
 // Console log the length of each Array
-console.log(6)
-console.log(6)
-console.log(6)
-
+console.log(names.length)
+console.log(URLs.length)
+console.log(years.length)
+//don't be dumb Nichos lol
 
 
 // Task 2
@@ -45,8 +45,8 @@ var newURL = "icp.org"
 var newYear = 1974
 
 names.push(newName);
-URLs[6] = newURL; // index starts a 0, so 6 is the 7th item
-years = years.concat(newYear);
+URLs[URLs.length] = newURL; // index starts a 0, so 6 is the 7th item
+years = years.concat([newYear]);
 
 // Task 3
 // construct an Object out of our three Arrays
@@ -72,14 +72,14 @@ for (var i = 0; i < names.length; i++) {
 console.log('museums', museums)
 
 var museums2 = {};
-names.forEach(function(n,i) {
-  museums2[n] = {};
+names.forEach(function(n,i) { // (n is current name, i is index)
+  museums2[n] = {}; // create new empty object for each museum name in array names
 
-  var currentURL = URLs[i];
-  var currentYear = years[i];
+  var currentURL = URLs[i]; // get URL at index i
+  var currentYear = years[i]; // get year at index i
 
-  museums2[n].URL = currentURL;
-  museums2[n]["year"] = currentYear;
+  museums2[n].URL = currentURL; // add that to the object
+  museums2[n]["year"] = currentYear; // add that to the object
 });
 
 console.log('museums2', museums2)
@@ -87,13 +87,13 @@ console.log('museums2', museums2)
 // Task
 // Write a function to add a new museum object, with properties URL and year, to an existing museums object. Call it on museums2
 function addAMuseum(museums, newName, newURL, newYear){
-  let newMuseum = {};
-  newMuseum[newName] = {};
-  newMuseum[newName].URL = newURL;
-  newMuseum[newName].year = newYear;
-  Object.assign(museums, newMuseum); //use assign to merge new museum object into existing museums object
-  return newMuseum;
-}
+  museums[newName] = {};
+  museums[newName].URL = newURL;
+  museums[newName].year = newYear;
+  return museums;
+} // fixed this to be slightly cleaner. Original solution had the function create a new object each time and then
+// assign it to museums2, which is less efficient than just adding a new blank object named after the inputted musuem name
+// to the musuem object. 
 
 addAMuseum(museums2, "Asian Art Musuem", "asianart.org", 1966);
 
