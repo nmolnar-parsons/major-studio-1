@@ -72,7 +72,7 @@ for (var i = 0; i < names.length; i++) {
 console.log('museums', museums)
 
 var museums2 = {};
-names.forEach(function(/* COMPLETE ME*/) { // look up forEach on google - dummy comment for github pushing
+names.forEach(function(n,i) {
   museums2[n] = {};
 
   var currentURL = URLs[i];
@@ -87,11 +87,14 @@ console.log('museums2', museums2)
 // Task
 // Write a function to add a new museum object, with properties URL and year, to an existing museums object. Call it on museums2
 function addAMuseum(museums, newName, newURL, newYear){
-  /* COMPLETE ME */
-
-  return museums;
+  let newMuseum = {};
+  newMuseum[newName] = {};
+  newMuseum[newName].URL = newURL;
+  newMuseum[newName].year = newYear;
+  Object.assign(museums, newMuseum); //use assign to merge new museum object into existing museums object
+  return newMuseum;
 }
 
-addAMuseum(/* COMPLETE ME */);
+addAMuseum(museums2, "Asian Art Musuem", "asianart.org", 1966);
 
 console.log('museums2', museums2);
