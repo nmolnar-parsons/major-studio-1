@@ -1,5 +1,10 @@
 
+## Revolutionary War sketches
 
-![sketches](https://github.com/nmolnar-parsons/major-studio-1/blob/main/sketches/MS1_01B_Sketches.png)
+![Revolutionary War Sketches](https://github.com/nmolnar-parsons/major-studio-1/blob/main/sketches/RevWar_Sketch.png)
+
+## NASM Sketch
+![NASM Sketch](https://github.com/nmolnar-parsons/major-studio-1/blob/main/sketches/NASM_Sketch.png)
+
 
 
