@@ -51,7 +51,44 @@ function drawIrisData() {
 }
 
 drawIrisData();
+// this function is called when the page loads, so we can see the results of the console.log in the browser console
+// if we did not call the function we would not see the output of the console.log in the function (obviously ha)
 
 // Task
 // Modify the code above to visualize the Iris dataset in the preview of index.html.
 // Feel free to add additional CSS properties in index.html, or using JavaScript, as you see fit.
+
+
+
+// build whatever viz in the class= "iris" div created in index.html
+function drawIrisData2() {
+  window
+    .fetch("./iris_json.json")
+    .then(data => data.json())
+    .then(data => {data.forEach(e => {
+        const viz = document.body.querySelector(".iris");  
+        const newChild = document.createElement("div");
+        newChild.className = "rectangle"; // for styling
+        newChild.style.height = e.petallength * 20 + "px"; //31-33: create a new div with class rectangle and height
+        viz.appendChild(newChild); // append new div to div with class viz selected above
+
+        const newPetalWidth = document.createElement("div");
+        newPetalWidth.className = "petal_with"; // for styling
+        newPetalWidth.style.height = e.petalwidth * 20 + "px"; //31-33: create a new div with class rectangle and height
+        viz.appendChild(newPetalWidth); // append new div to div with class viz selected above
+
+        const newSepal = document.createElement("div");
+        newSepal.className = "sepal_rectangle";
+        newSepal.style.height = e.sepallength * 20 + "px"; 
+        viz.appendChild(newSepal);
+
+        const newSepalWidth = document.createElement("div");
+        newSepalWidth.className = "sepal_width";
+        newSepalWidth.style.height = e.newSepalWidth * 20 + "px"; 
+        viz.appendChild(newSepalWidth);
+      })
+    })
+    //.then(data => {data.forEach(e => {addSepaltoViz(e.sepallength)})})
+  }
+
+drawIrisData2();

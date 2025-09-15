@@ -44,3 +44,27 @@ function temp(id) {
 }
 temp("edanmdm:nasm_A19450016000");
 
+
+
+// ASYNC V1: await
+// ASYNC V2: .then()
+// Theo helped me think through below: 
+
+async function tempAwait() {
+  let data = await fetchContentDataById("edanmdm:nasm_A19600335000") //await is neater than using a bunch of .then()
+  // await requires using async function
+  console.log(data);
+  return data;
+}
+
+function tempThen() {
+  return fetchContentDataById("edanmdm:nasm_A19600335000")
+    .then(data => data);
+}
+let pageData;
+
+tempAwait().then(data => {
+  console.log("example variable:", data);
+  pageData = data;
+});
+
