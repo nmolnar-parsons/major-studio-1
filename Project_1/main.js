@@ -1,49 +1,20 @@
+//Generate barchart from sitter_counts data
+// adapted from the lab example
 
-let textiles;
-let allPlaces = [];
 
-// load the data
-d3.json('data/data.json').then(data => { 
-  textiles = data;
-  analyzeData();
-  displayData();
-});
+let portraits;
 
-// analyze the data
-function analyzeData(){
-  let place;
+//Load data
+d3.json('sitter_count_test.json').then( data => {
+    portraits = data
+        .filter(d => d.Count > 2)
+        .filter(d => !d.Sitter.includes("Unidentified"))
+        .filter(d => !d.Sitter.includes("unidentified"))
+        .filter(d => !d.Sitter.includes("Multiple Portraits"));
+    displayData();
+})
 
-  // go through the list of textiles
-  textiles.forEach(n => {
-    place = n.place;
-    let match = false;
-
-    // see if their location already exists the allplaces array
-    allPlaces.forEach(p => {
-      if(p.name == place){
-        p.count++;
-        match = true;
-      }
-    });
-    // if not create a new entry for that place name
-      if(!match){
-        allPlaces.push({
-          name: place,
-          count: 1
-        });
-      }
-  });
-
-  // sort by amount of items in the list
-  allPlaces.sort((a, b) => (a.count < b.count) ? 1 : -1); 
-  // console.log(allPlaces)
-}
-
-//allPlaces is their count JSON, so change 
-
-// display the data
 function displayData(){
-  
   // define dimensions and margins for the graphic
   const margin = ({top: 100, right: 50, bottom: 100, left: 80});
   const width = 1400;
@@ -52,18 +23,18 @@ function displayData(){
   // let's define our scales. 
   // yScale corresponds with amount of textiles per country
   const yScale = d3.scaleLinear()
-    .domain([0, d3.max(allPlaces, d => d.count)+1])
+    .domain([0, d3.max(portraits, d => d.Count)+1])
     .range([height - margin.bottom, margin.top]); 
 
   // xScale corresponds with country names
   const xScale = d3.scaleBand()
-    .domain(allPlaces.map(d => d.name))
+    .domain(portraits.map(d => d.Sitter))
     .range([margin.left, width - margin.right]);
 
   // interpolate colors
   const sequentialScale = d3.scaleSequential()
-    .domain([0, d3.max(allPlaces, d => d.count)])
-    .interpolator(d3.interpolateRgb("orange", "purple"));
+    .domain([0, d3.max(portraits, d => d.Count)])
+    .interpolator(d3.interpolateRgb("red", "blue"));
 
   // create an svg container from scratch
   const svg = d3.select('body')
@@ -74,13 +45,13 @@ function displayData(){
   // attach a graphic element, and append rectangles to it
   svg.append('g')
     .selectAll('rect')
-    .data(allPlaces)
+    .data(portraits)
     .join('rect')
-    .attr('x', d => {return xScale(d.name) })
-    .attr('y', d => {return yScale(d.count) })
-    .attr('height', d => {return yScale(0)-yScale(d.count) })
+    .attr('x', d => {return xScale(d.Sitter) })
+    .attr('y', d => {return yScale(d.Count) })
+    .attr('height', d => {return yScale(0)-yScale(d.Count) })
     .attr('width', d => {return xScale.bandwidth() - 2 })
-    .style('fill', d => {return sequentialScale(d.count);});
+    .style('fill', d => {return sequentialScale(d.Count);});
  
 
   // Axes
@@ -112,5 +83,5 @@ function displayData(){
     .attr('x', margin.left)
     .attr('fill', 'black')
     .attr('text-anchor', 'start')
-    .text('Flowers in Embroidery by Country')
+    .text('Number of Portraits by Sitter')
 }

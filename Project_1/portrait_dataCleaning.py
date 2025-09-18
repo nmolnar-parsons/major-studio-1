@@ -11,5 +11,6 @@ import pandas as pd
 print("done install pandas")
 
 df = pd.read_csv('Major_Studio_1/major-studio-1-github/Project_1/portraits_raw.csv')
-print(df)
+df.head()
+df["Sitter"] = df["name"].apply(lambda x: x.get("Sitter") if isinstance(x,dict)else None)
 
