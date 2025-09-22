@@ -1,6 +1,6 @@
 
-let textiles;
-let allPlaces = [];
+let textiles; //set up empty container
+let allPlaces = []; //set up empty array
 
 // load the data
 d3.json('data/data.json').then(data => { 
@@ -21,7 +21,7 @@ function analyzeData(){
     // see if their location already exists the allplaces array
     allPlaces.forEach(p => {
       if(p.name == place){
-        p.count++;
+        p.count++; //creating 
         match = true;
       }
     });
@@ -35,7 +35,7 @@ function analyzeData(){
   });
 
   // sort by amount of items in the list
-  allPlaces.sort((a, b) => (a.count < b.count) ? 1 : -1); 
+  allPlaces.sort((a, b) => (a.count < b.count) ? 1 : -1); // sorting by changing position of items one by one 
   // console.log(allPlaces)
 }
 
@@ -57,8 +57,8 @@ function displayData(){
 
   // xScale corresponds with country names
   const xScale = d3.scaleBand()
-    .domain(allPlaces.map(d => d.name))
-    .range([margin.left, width - margin.right]);
+    .domain(allPlaces.map(d => d.name)) // all place names
+    .range([margin.left, width - margin.right]); // display across the x-axis of our graph
 
   // interpolate colors
   const sequentialScale = d3.scaleSequential()
@@ -66,7 +66,7 @@ function displayData(){
     .interpolator(d3.interpolateRgb("orange", "purple"));
 
   // create an svg container from scratch
-  const svg = d3.select('body')
+  const svg = d3.select('body') 
     .append('svg')
     .attr('width', width)
     .attr('height', height);
@@ -76,8 +76,8 @@ function displayData(){
     .selectAll('rect')
     .data(allPlaces)
     .join('rect')
-    .attr('x', d => {return xScale(d.name) })
-    .attr('y', d => {return yScale(d.count) })
+    .attr('x', d => {return xScale(d.name) }) // turns name into position on x-axis
+    .attr('y', d => {return yScale(d.count) }) // turns count into y-position
     .attr('height', d => {return yScale(0)-yScale(d.count) })
     .attr('width', d => {return xScale.bandwidth() - 2 })
     .style('fill', d => {return sequentialScale(d.count);});
@@ -98,7 +98,7 @@ function displayData(){
     .attr('transform', `translate(0, ${height - margin.bottom})`)
     .call(xAxis)
     .selectAll('text')	
-    .style('text-anchor', 'end')
+    .style('text-anchor', 'end') // align text to end of x-axis
     .attr('dx', '-.6em')
     .attr('dy', '-0.1em')
     .attr('transform', d => {return 'rotate(-45)' });
@@ -111,6 +111,6 @@ function displayData(){
     .attr('y', margin.top-20)
     .attr('x', margin.left)
     .attr('fill', 'black')
-    .attr('text-anchor', 'start')
+    .attr('text-anchor', 'start') 
     .text('Flowers in Embroidery by Country')
 }

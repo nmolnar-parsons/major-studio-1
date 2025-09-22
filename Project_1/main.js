@@ -51,7 +51,7 @@ function displayData(){
     .attr('y', d => {return yScale(d.Count) })
     .attr('height', d => {return yScale(0)-yScale(d.Count) })
     .attr('width', d => {return xScale.bandwidth() - 2 })
-    .style('fill', d => {return sequentialScale(d.Count);});
+    .style('fill', d => {return sequentialScale(d.Count);}); // use scale to generate color
  
 
   // Axes
