@@ -3,13 +3,14 @@
 
 
 let portraits;
+let filter_num = 4
 
 //Load data
-d3.json('sitter_count_test.json').then( data => {
+d3.json('Data/sitter_count_test.json').then( data => {
     portraits = data
-        .filter(d => d.Count > 2)
-        .filter(d => !d.Sitter.includes("Unidentified"))
-        .filter(d => !d.Sitter.includes("unidentified"))
+        .filter(d => d.Count > filter_num)
+        //.filter(d => !d.Sitter.includes("Unidentified"))
+        //.filter(d => !d.Sitter.includes("unidentified"))
         .filter(d => !d.Sitter.includes("Multiple Portraits"));
     displayData();
 })
@@ -83,5 +84,5 @@ function displayData(){
     .attr('x', margin.left)
     .attr('fill', 'black')
     .attr('text-anchor', 'start')
-    .text('Number of Portraits by Sitter')
+    .text(`Number of Portraits by Sitter, more than ${filter_num} portraits`);
 }
