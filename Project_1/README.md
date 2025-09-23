@@ -8,9 +8,9 @@
 
 ## Visualization:
 
-![Prototype_1]()
+![Prototype_1](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png)
 
-## for final project:
+## for final submisson:
 - filter/summarize data in javascript (not beforehand in python) to retain more information on each portrait
 - change chart type to pictoral unit chart:
     - each portrait = 1 square, stack in each bin
