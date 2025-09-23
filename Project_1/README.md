@@ -7,8 +7,12 @@
 - filtered out "unidentified" sitters when importing json 
 
 ## Visualization:
-
+filtered:
 ![Prototype_1](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png)
+
+or unfiltered:
+
+![Unfiltered](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/include_unidentified.png)
 
 ## for final submisson:
 - filter/summarize data in javascript (not beforehand in python) to retain more information on each portrait
