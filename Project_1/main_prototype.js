@@ -54,7 +54,6 @@ function displayData(){
     .attr('width', d => {return xScale.bandwidth() - 2 })
     .style('fill', d => {return sequentialScale(d.Count);}); // use scale to generate color
  
-
   // Axes
   // Y Axis
   const yAxis =  d3.axisLeft(yScale).ticks(5)
