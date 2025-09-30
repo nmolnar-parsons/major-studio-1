@@ -8,7 +8,7 @@
 
 ## Visualization:
 
-![Basic Viz]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image1.png])
+![Basic Viz]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png])
 
 ![Selected Sitter]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image2.png])
 
