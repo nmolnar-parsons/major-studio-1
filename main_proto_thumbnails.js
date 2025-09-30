@@ -2,9 +2,11 @@
 // adapted from the lab example
 
 
-//filtering:
-  //filtering on the fly 
-  //
+//TODO:
+// add date filtering
+// add different ways to classify/group paintings
+
+
 
 let portraits;
 let grouped;

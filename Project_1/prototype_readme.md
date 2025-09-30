@@ -14,11 +14,11 @@ or unfiltered:
 
 ![Unfiltered](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/include_unidentified.png)
 
-## Future firections:
-- Filtering by date -> add selection bar with two sliders. I don't know what this is called
-- selecting topic of interest (maybe outside of original question of viz, which is sitters)
-    - occupation
-    - gender
-    - etc
-- smoother animations when opening or closing thumbails
-- more elaborate styling?
+## for final submisson:
+- filter/summarize data in javascript (not beforehand in python) to retain more information on each portrait
+- change chart type to pictoral unit chart:
+    - each portrait = 1 square, stack in each bin
+    - ideally, put png of each portrait in using thumbnail from dataset
+    - tooltip hover over each portrait -> gives portrait artist, date, material/format, collection
+- zoom into people with 4-10 portraits?
+
