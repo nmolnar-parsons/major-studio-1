@@ -11,6 +11,7 @@ let grouped;
 const minCount = 4;
 
 const tooltip = d3.select("#tooltip"); //make sure tooltip is selected
+chosen_decade = 1790; // set decade for filtering
 
 //Load data
 d3.csv('check_dates.csv').then( data => {
@@ -18,22 +19,34 @@ d3.csv('check_dates.csv').then( data => {
         .filter(d => !d.Sitter.includes("Unidentified"))
         .filter(d => !d.Sitter.includes("unidentified"))
         .filter(d => !d.Sitter.includes("Multiple Portraits"))
-        //.filter(d => d.Clean_Date >= 1770 && d.Clean_Date <= 1790);
-    // console.log(portraits)
-    // console.log(portraits[0].Sitter)
-    // console.log(portraits[0].thumbnail)
+        //.filter(d => d.Clean_Date >= 1770 && d.Clean_Date <= 1790); old filter for testing
+    // const date_filted = portraits.filter(d=>{
+    //   const year = +d.Clean_Date;
+    //   return year >= chosen_decade && year < chosen_decade + 10;
+    // })
+    // have not made this function yet. When I do, change portraits to date_filtered
     grouped = d3.group(portraits, d => d.Sitter);
     grouped = new Map(Array.from(grouped).filter(([sitter, arr]) => arr.length >= minCount).sort((a, b) => b[1].length - a[1].length));
     console.log(grouped)
+    d3.select('#viz').selectAll('*').remove(); // Clear previous chart
     displayData();
-    displayThumbnails("George Washington", portraits);
+
+
+    function click_text(event, d){ //takes an event and data (we have piped in the array so data is hanlded)
+      const sitterName = d[0]; // take first element from d, i.e. sitter
+      displayThumbnails(sitterName, portraits);
+      console.log(sitterName)
+      
+    }
+    // add click to bar or text
+    d3.selectAll('rect').on("click", click_text);
 })
 
 function displayData(){
   // define dimensions and margins for the graphic
   const margin = ({top: 100, right: 50, bottom: 100, left: 80}); // this is unused?
   const width = window.innerWidth - 100;
-  const height = window.innerHeight - 100;
+  const height = 400;
   
   const container = d3.select('#viz')
     .attr('width', width)
@@ -78,6 +91,7 @@ function displayData(){
   // X Axis
   const xAxis =  d3.axisBottom(xScale).tickSize(0);
 
+  // add x axis and rotate text (from lab example)
   container.append('g')
     .attr('transform', `translate(0, ${height - margin.bottom})`)
     .call(xAxis)
@@ -96,7 +110,18 @@ function displayData(){
     .attr('x', margin.left)
     .attr('fill', 'black')
     .attr('text-anchor', 'start')
-    .text(`Number of Portraits by Sitter`);
+    .text(`Portraits of the Revolutionary Era, from 1780 to 1810`);
+
+  //y-axis label
+  container.append("text")
+    .attr("transform", "rotate(-90)")
+    .attr("font-family", "sans-serif")
+    .attr("font-size", 15)
+    .attr("y", 30)
+    .attr("x",0 - (height / 2))
+    .attr("dy", "1em")
+    .style("text-anchor", "middle")
+    .text("Number of Portraits");
   
 };
 
@@ -106,6 +131,10 @@ function displayData(){
 function displayThumbnails(sitterName, data){
   // right now I want to display all the thumbnails for a given sitter. Will keep sitter fixed for now
 
+
+  //reset scroll position
+  document.getElementById('thumbnail_gallery_container').scrollLeft = 0;
+  
   // filter data according to sitter, and trim thumbnails that are missing
   const portraits = data.filter(d => 
     d.Sitter === sitterName && 
@@ -155,10 +184,11 @@ function displayThumbnails(sitterName, data){
 
 
     function tooltip_mouseover(event, d){
-      const artist = d.Artist ? d.Artist : "Unknown Artist";
+      const title = d.title ? d.title : "Untitled";
+      const artist = d.Artist ? d.Artist : "Unknown";
       const year = d.Clean_Date ? d.Clean_Date : "Unknown Date";
       tooltip
-        .html(`${artist}<br/>${year}`)
+        .html(`Title: ${title}<br/>Artist: ${artist}<br/>Year: ${year}`)
         .style("opacity", 1)
         .style("left", (event.pageX + 10) + "px") // position tooltip near mouse
         .style("top", (event.pageY - 28) + "px");
@@ -168,37 +198,40 @@ function displayThumbnails(sitterName, data){
       .attr("width", 200)
       .attr("height", thumb_height)
       .attr("href", d => d.thumbnail) // link to the thumbnail image
-      .attr("alt", d => d.Sitter) // alt text for accessibility
+      .attr("alt", d => d.Sitter) // alt text
       .attr("class", "thumbnail-image")
       .on("mouseover", function(event, d) { tooltip_mouseover(event, d); })
       .on("mousemove", function(event, d) { tooltip_mouseover(event, d); }) // update position as mouse moves
       .on("mouseout", function() {tooltip.style("opacity", 0)})
+      //add functionality for enlarging image on click
+      .on("click", function(event,d){
+        console.log(d.thumbnail);
+        d3.select("#enlarge_thumbnail").attr("src", d.thumbnail); // select source from thumbail
+        
+        const title = d.title ? d.title : "Untitled";
+        const artist = d.Artist ? d.Artist : "Unknown Artist";
+        const year = d.Clean_Date ? d.Clean_Date : "Unknown Year";
+        const link = d.collectionsURL ? `<a href="${d.collectionsURL}" target="_blank" style="color:#ffd700;">View Collection Item</a>` : "";
 
-    thumb_group.append("text") // text behind image for hover-over
-      .attr("class", "thumbnail_hover")
-      .attr("x", thumb_width/2) // text in middle of thumbnail
-      .attr("y", thumb_height/2)
-      .attr("text-anchor", "middle").attr("dominant-baseline", "middle")
-      .style(opacity, 0) // make invisible
-      .text(d => d.Clean_Date); // display the date below each thumbnail
-    // first create group and place
-    // then add images 
-    // then add text
-
-    // might think about changing this to a scrolling gallery instead of everything
-
-
-    // hover tooltip:
-    // inspired by Lara's Seasons of Light Tooltip example
-
-
-
-
+        d3.select("#enlarge_info").html(
+          `<strong>${title}</strong> <br>
+          Artist: ${artist}<br>
+          Year: ${year}<br>
+          ${link}`
+        );
+        
+        d3.select("#enlarge_modal").style("display", "flex"); // make modal visible
+      })
 
 
-
-
-
+    d3.select("#enlarge_modal").on("click", function() {
+      d3.select(this).style("display", "none");
+    });
+    d3.select("#enlarge_thumbnail").on("click", function(event) {
+      event.stopPropagation();
+    });
   
 }
+
+
 
