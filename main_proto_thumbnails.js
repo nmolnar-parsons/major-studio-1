@@ -36,10 +36,11 @@ d3.csv('check_dates.csv').then( data => {
       const sitterName = d[0]; // take first element from d, i.e. sitter
       displayThumbnails(sitterName, portraits);
       console.log(sitterName)
-      
     }
-    // add click to bar or text
+    // add click to bar
     d3.selectAll('rect').on("click", click_text);
+
+
 })
 
 function displayData(){
@@ -209,17 +210,18 @@ function displayThumbnails(sitterName, data){
         d3.select("#enlarge_thumbnail").attr("src", d.thumbnail); // select source from thumbail
         
         const title = d.title ? d.title : "Untitled";
-        const artist = d.Artist ? d.Artist : "Unknown Artist";
-        const year = d.Clean_Date ? d.Clean_Date : "Unknown Year";
-        const link = d.collectionsURL ? `<a href="${d.collectionsURL}" target="_blank" style="color:#ffd700;">View Collection Item</a>` : "";
+        const artist = d.Artist ? d.Artist : "Unknown";
+        const year = d.Clean_Date ? d.Clean_Date : "Unknown";
+        const link = d.collectionsURL ? `<a href="${d.collectionsURL}" target="_blank" style="color:##1f60e2ff;">Link to Collection</a>` : "";
+        const collection = d.unitCode
 
         d3.select("#enlarge_info").html(
           `<strong>${title}</strong> <br>
           Artist: ${artist}<br>
           Year: ${year}<br>
+          Collection: ${d.unitCode}<br>
           ${link}`
         );
-        
         d3.select("#enlarge_modal").style("display", "flex"); // make modal visible
       })
 
@@ -230,6 +232,16 @@ function displayThumbnails(sitterName, data){
     d3.select("#enlarge_thumbnail").on("click", function(event) {
       event.stopPropagation();
     });
+
+    // add sitter name as title to the gallery
+    d3.select('#thumbnail_gallery_container')
+      .selectAll('h3')
+      .data([sitterName]) // bind single data point
+      .join('h3')
+      .text(d => d) // set text to sitter name
+      .style('text-align', 'center')
+      .attr('x', (width / 2))
+      .attr('y', margin.top);
   
 }
 
