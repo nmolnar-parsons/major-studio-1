@@ -7,12 +7,12 @@
 - filtered out "unidentified" sitters when importing json 
 
 ## Visualization:
-filtered:
-![Prototype_1](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png)
 
-or unfiltered:
+![Basic Viz]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image1.png))
 
-![Unfiltered](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/include_unidentified.png)
+![Selected Sitter]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/include_unidentified.png](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image2.png))
+
+![Selected Portrait]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/include_unidentified.png](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image3.png))
 
 ## Future firections:
 - Filtering by date -> add selection bar with two sliders. I don't know what this is called
