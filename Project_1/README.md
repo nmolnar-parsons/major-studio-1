@@ -8,11 +8,11 @@
 
 ## Visualization:
 
-![Basic Viz]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png])
+![Basic Viz](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Prototype1.png)
 
-![Selected Sitter]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image2.png])
+![Selected Sitter](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image2.png)
 
-![Selected Portrait]([https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image3.png])
+![Selected Portrait](https://github.com/nmolnar-parsons/major-studio-1/blob/main/Project_1/Readme_images/image3.png)
 
 ## Future firections:
 - Filtering by date -> add selection bar with two sliders. I don't know what this is called
