@@ -37,6 +37,7 @@ d3.csv('check_dates.csv').then( data => {
     function click_text(event, d){ //takes an event and data (we have piped in the array so data is hanlded)
       const sitterName = d[0]; // take first element from d, i.e. sitter
       displayThumbnails(sitterName, portraits);
+      highlight_rectange.call(this, event, d); // highlight the clicked rectangle
       console.log(sitterName)
     }
     // add click to bar
@@ -47,9 +48,9 @@ d3.csv('check_dates.csv').then( data => {
 
 function displayData(){
   // define dimensions and margins for the graphic
-  const margin = ({top: 100, right: 50, bottom: 100, left: 80}); // this is unused?
+  const margin = ({top: 20, right: 50, bottom: 20, left: 80}); // this is unused?
   const width = window.innerWidth - 100;
-  const height = 400;
+  const height = 300;
   
   const container = d3.select('#viz')
     .attr('width', width)
@@ -113,7 +114,6 @@ function displayData(){
     .attr('x', margin.left)
     .attr('fill', 'black')
     .attr('text-anchor', 'start')
-    .text(`Portraits of the Revolutionary Era, from 1780 to 1810`);
 
   //y-axis label
   container.append("text")
@@ -248,4 +248,11 @@ function displayThumbnails(sitterName, data){
 }
 
 
-
+function highlight_rectange(event, d){
+  d3.selectAll('rect')
+    .attr("stroke", null)
+    .attr("stroke-width", null); // reset the border
+  d3.select(this)
+    .attr("stroke", "orange")
+    .attr("stroke-width", 4);
+}
