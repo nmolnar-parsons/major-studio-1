@@ -4,6 +4,7 @@ https://rednoise.org/rita/reference/index.php
 */
 
 const myInput = document.querySelector('#myInput')
+// look at DOM and find element with ID of myInput
 
 function getInput() {
   let input = myInput.value;
@@ -28,7 +29,7 @@ function processRita(input) {
   words.forEach((word, i) => {
     // use regular expression to replace all nouns with random words pulled from RiTa
     // reference https://regexr.com/
-    if (/nn/.test(pos[i])) {
+    if (/vb/.test(pos[i])) { // test if word in pos[i] matchches the regex /whatever/
       // if the word is a noun replace the word with a new noun:
       output += RiTa.randomWord(pos[i]) + ' ';
     } else {

@@ -31,7 +31,7 @@ function processRita(input) {
 
     // if the word is a noun, let's attach the class "noun"
     if (['nn', 'nns', 'nnp', 'nnps'].includes(pos[i])) {
-      span.attr('class', 'noun highlight');
+      span.attr('class', 'noun highlight'); // two
     // if the word is a verb, attach the class "verb"
     } else if (pos[i] === 'vb') {
       span.attr('class', 'verb highlight');
