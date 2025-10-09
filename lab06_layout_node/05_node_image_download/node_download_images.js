@@ -8,6 +8,7 @@ const request = require('request');
 let folder = "downloads";
 
 // download the image by url, name the file by filename
+
 function downloadImage(uri, filename, callback){
   try {
     request.head(uri, function(err, res, body){

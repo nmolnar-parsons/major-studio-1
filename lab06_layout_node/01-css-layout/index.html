@@ -10,7 +10,7 @@
             }
 
             #centered{
-                margin: auto;
+                margin: auto; /* also centers by making left right margins equal*/
                 width: 500px;
                 background-color: lightpink;
                 height: 100%;
@@ -20,7 +20,8 @@
                 position: absolute;
                 top: 50%;
                 left: 50%;
-                transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%); /* image positioned from top left corner */
+                /* this translates based on the image height and width*/
             }
 
             #bottomRight{
@@ -33,7 +34,7 @@
                 padding: 0px;
             }
             #topLeftFixed{
-                position:fixed;
+                position:fixed; /* fix element in place on the webpage */
                 top: 0px;
                 left: 0px;
                 width: 200px;
