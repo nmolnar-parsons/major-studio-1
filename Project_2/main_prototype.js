@@ -12,8 +12,7 @@ d3.csv("Data/unprocessed_nodrawing.csv").then(data => {
         .data(data)
         .enter()
         .append("img")
-        .attr("src", d => d.thumbnail) // Assuming the CSV has a column 'thumbnail_url'
-        .attr("alt", d => d.title) // Assuming the CSV has a column 'title'
+        .attr("src", d => d.thumbnail)
         .attr("width", 150) // Set thumbnail width
         .attr("height", 150) // Set thumbnail height
         .style("margin", "10px")
