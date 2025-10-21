@@ -1,0 +1,22 @@
+.portrait_thumbnail{
+    width: 50px;
+    height: 50px;
+}
+
+.title-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* space between title and button */
+}
+
+.x-axis text {
+    font-family:'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+    font-size: 14px;
+    color: #eadf11;
+}
+
+
+#histogram{
+    position: relative;
+    background-color: rgb(137, 100, 68);
+}
