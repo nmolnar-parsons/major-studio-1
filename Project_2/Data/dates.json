@@ -1,0 +1,63 @@
+{
+  "George Washington": [
+    {
+      "event": "Birth",
+      "date": "1732-02-22",
+      "location": "Westmoreland County, Virginia"
+    },
+    {
+      "event": "Marriage to Martha Custis",
+      "date": "1759-01-06",
+      "location": "New Kent County, Virginia"
+    },
+    {
+      "event": "Appointed Commander-in-Chief of Continental Army",
+      "date": "1775-06-15",
+      "location": "Philadelphia, Pennsylvania"
+    },
+    {
+      "event": "Victory at Yorktown",
+      "date": "1781-10-19",
+      "location": "Yorktown, Virginia"
+    },
+    {
+      "event": "Elected First President of the United States",
+      "date": "1789-04-30",
+      "location": "New York City, New York"
+    },
+    {
+      "event": "End of Presidency",
+      "date": "1797-03-04",
+      "location": "Philadelphia, Pennsylvania"
+    },
+    {
+      "event": "Death",
+      "date": "1799-12-14",
+      "location": "Mount Vernon, Virginia"
+    }
+  ],
+  "Benjamin Franklin": [
+    {
+      "event": "Birth",
+      "date": "1706-01-17",
+      "location": "Boston, Massachusetts"
+    },
+    {
+      "event": "Death",
+      "date": "1790-04-17",
+      "location": "Philadelphia, Pennsylvania"
+    }
+  ],
+  "Thomas Jefferson": [
+    {
+      "event": "Birth",
+      "date": "1743-04-13",
+      "location": "Shadwell, Virginia"
+    },
+    {
+      "event": "Death",
+      "date": "1826-07-04",
+      "location": "Monticello, Virginia"
+    }
+  ]
+}
