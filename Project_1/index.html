@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Faces of the Revolution</title>
+        <script src="https://d3js.org/d3.v7.min.js"></script>
+        <style>
+           /* Fill in style as needed here */ 
+           body {
+            font-family: sans-serif;
+            background: #f1efef;
+            margin: 0;
+           }
+           
+           .title {
+            max-width: 1100px;
+            margin: 40px auto; 
+            padding: 0 24px;
+           }
+
+           #viz {
+            max-width: 1100px;
+            height: 400px;
+            margin: 0 auto; /* centers the svg */
+            padding : 0 24px; /* padding on left and right so that svg doesn't touch the edges on small screens */
+            display: block; /* removes small gap under svg */
+            background: #fff;
+           }           
+           .thumbnail-img {
+                width: 100px;
+                height: 100px;
+                object-fit: cover; /* crops to fill the box, kinda*/
+                border: 10px solid #000000;
+            }
+            /* Thumbnail Gallery container and  */ 
+            #thumbnail_gallery_container {
+                overflow-x: auto;
+                overflow-y: hidden;
+                width: 100%;
+                max-width: 1100px;
+                height: 200px;
+                display: block;
+                margin: 24px auto 0 auto;
+                box-sizing: border-box;
+                border-radius: 8px; /* optional: for a softer look */
+
+            }
+            
+            #thumbnail_gallery {
+              display: block;
+            }
+
+            #tooltip {
+                position: absolute;
+                opacity: 0;
+                pointer-events: none;
+                background: #fff;
+                border: 1px solid #ccc;
+                padding: 8px;
+                border-radius: 4px;
+                z-index: 1000;
+            }
+            
+            #enlarge_modal {
+                display:none; 
+                position:fixed; 
+                top:0; 
+                left:0; 
+                width:100vw; 
+                height:100vh; 
+                background:rgba(0,0,0,0.8); 
+                z-index:9999; 
+                justify-content:center; 
+                align-items:center;
+            }
+
+            #enlarge_thumbnail {
+                max-width:90vw; 
+                max-height:90vh; 
+                box-shadow:0 0 20px #000; 
+                border:8px solid #fff;
+
+            }
+
+             #enlarge_info {
+                color:#000000; 
+                text-align:left; 
+                margin-top:20px; 
+                margin-left: 20px;
+                font-size:1.1em;
+                background: #f1efef;
+                border-radius: 12px;
+                border: 2px solid #000000;
+                padding: 12px 18px;
+            }
+
+
+            /* Smaller text styling, probably should group better?*/
+            #datasource_p {
+                font-size: 0.8em;
+                color: #555;
+            }
+            #thumbnail_label {
+                max-width: 1100px;
+                margin: 16px auto 8px auto;
+                padding: 0 24px;
+                font-size: 0.8em;
+                color: #4e4e4e;
+            }
+
+            a {
+                color: #1a0dab;
+                text-decoration: none;
+            }
+
+            h1 {
+                font-family: cursive;
+                font-size: 60px;
+                margin-bottom: 10px;
+            }
+
+        </style>
+    </head>
+    <body>
+        <!-- tooltip-->
+        <div id="tooltip"></div>
+
+        <div class="title">
+            <h1>Faces of the Revolution</h1>
+            <p>Of the many Americans who lived through this period, only the richest and most famous could afford having their portrait taken.<br>
+            Of those rich and famous people, only a fraction had more than one portrait made.<br>
+            And of those indivudals, a few stand out from the crowd.
+            </p>
+            <p id="datasource_p">Data from HuggingFace Revolutionary Crossroads Dataset, which I am NOT linking here as it is not yet published.</p>
+        </div>
+        
+
+        <!-- Main Viz-->
+        <script src="main_proto_thumbnails.js"></script>
+        <svg id="viz"></svg>
+
+        <!-- Thumbnail Gallery-->
+        <p id="thumbnail_label">Click on a thumbnail to enlarge.</p>
+        <div id="thumbnail_gallery_container">
+            <svg id="thumbnail_gallery"></svg>
+        </div>
+
+        <!-- add div and image to store thumbnail when clicked. AI helped with this.-->
+        <div id="enlarge_modal">
+            <img id="enlarge_thumbnail" src="" alt="Enlarged Thumbnail">
+            <div id="enlarge_info"></div>
+        </div>
+    </body>
+</html>

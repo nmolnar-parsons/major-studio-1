@@ -1,7 +1,7 @@
 //import cleaned data 
 
 
-d3.csv("Data/cleaned.csv").then(data => {
+d3.csv("Project_2/Data/cleaned.csv").then(data => {
 
 
     //filter for George Washington and between 1780 and 1810
@@ -45,6 +45,7 @@ d3.csv("Data/cleaned.csv").then(data => {
         .attr("width", width)
         .attr("height", height)
         .attr("fill", "lightgray")
+    
     
     const g = histogram.append("g");
 
@@ -119,6 +120,20 @@ d3.csv("Data/cleaned.csv").then(data => {
         g.attr("transform", transform);
     }
 
+    const zoomBehavior = d3.zoom()
+        .extent([[0, 0], [width, height]])
+        .scaleExtent([1, 8])
+        .on("zoom", zoomed);
+
+    histogram.call(zoomBehavior);
+
+    document.getElementById("reset-button").onclick = function() {
+        histogram.transition()
+            .duration(500)
+            .call(zoomBehavior.transform, d3.zoomIdentity);
+    };
+
+
 
     // const gallery = d3.select("#thumbnail_gallery");
     // const thumbnails = gallery.selectAll("img")
@@ -137,5 +152,9 @@ d3.csv("Data/cleaned.csv").then(data => {
 
 
 
+
+});
+
+d3.csv("Project_2/Data/Lifeline_dates.csv").then(data => {
 
 });
