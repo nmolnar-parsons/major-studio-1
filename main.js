@@ -21,7 +21,7 @@ d3.json("Project_2/Data/dates.json").then(dates => {
 
 
 
-d3.csv("Project_2/Data/cleaned.csv").then(data => {
+d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
 
     //sitter counts
     const sitterCounts = Array.from(d3.rollup(data, v => v.length, d => d.Sitter))
@@ -29,7 +29,7 @@ d3.csv("Project_2/Data/cleaned.csv").then(data => {
 
     //filter for George Washington and between 1780 and 1810
     var gwData = data.filter(d => 
-        d.Sitter === "James Madison" &&
+        d.Sitter === "George Washington" &&
         // !["unidentified", "Unidentified Woman", "Unidentified Man"].includes(d.Sitter)
         +d.Clean_Date >= 1780 && +d.Clean_Date <= 1810 &&
         d.thumbnail // this checks that thumbnail is not empty, null, or undefined
@@ -322,9 +322,6 @@ d3.csv("Project_2/Data/cleaned.csv").then(data => {
     //     .on("click", (event, d) => {
     //         window.open(d.collectionsURL, "_blank"); // Assuming the CSV has a column 'full_image_url'
     //     });
-
-
-
 
 
 });
