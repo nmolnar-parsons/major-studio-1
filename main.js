@@ -23,12 +23,17 @@ d3.json("Project_2/Data/dates.json").then(dates => {
 
 d3.csv("Project_2/Data/cleaned.csv").then(data => {
 
+    //sitter counts
+    const sitterCounts = Array.from(d3.rollup(data, v => v.length, d => d.Sitter))
+        .reduce((acc, [sitter, count]) => (acc[sitter] = count, acc), {});
 
     //filter for George Washington and between 1780 and 1810
     var gwData = data.filter(d => 
-        d.Sitter === "George Washington" &&
+        d.Sitter === "James Madison" &&
+        // !["unidentified", "Unidentified Woman", "Unidentified Man"].includes(d.Sitter)
         +d.Clean_Date >= 1780 && +d.Clean_Date <= 1810 &&
         d.thumbnail // this checks that thumbnail is not empty, null, or undefined
+        // && sitterCounts[d.Sitter] >= 5
     );
 
     console.log(gwData);
