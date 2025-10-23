@@ -119,7 +119,7 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
 
     // Calculate the bottom y position of the last stacked image
     const maxStackIndex = d3.max(gwData, d => d.stackIndex);
-    const axisY = imageBaseY - 60; // 10px above the top of the images
+    const axisY = imageBaseY - 50; // 10px above the top of the images
 
     g.append("g")
         .attr("class", "x-axis")
@@ -132,8 +132,8 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
         .attr('transform',"rotate(45)" );
 
     //append rectangular timeline of Sitter's Life (in this case George Washington)
-    const timelineHeight = 20;
-    const timelineY = imageBaseY - timelineHeight - 70; // 30px above images, adjust as needed
+    const timelineHeight = 25;
+    const timelineY = imageBaseY - timelineHeight - 55; // 30px above images, adjust as needed
 
 
     function draw_timeline(person, color, timelineY, timelineHeight, x_scale, g) {
@@ -253,7 +253,7 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
             .attr("y", timelineY + timelineHeight / 2 + 5)
             .attr("text-anchor", "start")
             .attr("fill", "black")
-            .attr("font-size", "14px")
+            .attr("font-size", "20px")
             .text(`${person} (${birth.date.substring(0,4)}-${death.date.substring(0,4)})`);
     }
 
