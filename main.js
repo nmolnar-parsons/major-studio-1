@@ -7,6 +7,10 @@
 //make qualitative work harder
     //highlights 
     //
+// maybe do a rectangle with darker areas for higher concenration of portraits in that year range
+//basically a heatmap of portraits along the timeline
+// caurosel of portraits for each sitter when the bar is clicked
+// double bind current year and what portrait is currently being shown?
 
 
 
@@ -62,10 +66,6 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
         .domain([1780,1810]) // set min and max years at 1780 and 1810
         .range([margin.left, width - margin.right]);
 
-
-
-
-
     const histogram = d3.select("#histogram")
         .attr("width", width)
         .attr("height", height)
@@ -73,7 +73,6 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
     
     
     const g = histogram.append("g");
-
     const imageBaseY = margin.top;
     const imageSpacing = 50;
     const imageWidth = 40;
@@ -107,12 +106,6 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
         .attr("preserveAspectRatio", "xMidYMid slice")
         .on("click", (event, d) => {
             window.open(d.collectionsURL, "_blank");
-        })
-        .each(function(d) {
-            this.addEventListener('error', function() {
-                d3.select(this)
-                .attr("href", "placeholder.png"); // path to your placeholder image
-            });
         });
 
         // .on("click", (event, d) => {
@@ -238,10 +231,20 @@ d3.csv("Project_2/Data/portraits_with_cropXY.csv").then(data => {
                 // Fade in new images
                 images.transition()
                     .duration(400)
-                    .style("opacity", 1);
+                        .style("opacity", 1);
 
-                // Change the h2 text to the selected person
-                document.querySelector("h2").textContent = person;
+                    // Change the h2 text to the selected person
+                const h2 = document.querySelector("h2");
+
+                // Fade out
+                h2.style.transition = "opacity 0.4s";
+                h2.style.opacity = 0;
+
+                // After fade out, change text and fade in
+                setTimeout(() => {
+                    h2.textContent = person;
+                    h2.style.opacity = 1;
+                }, 400); // match your image transition duration
             });
 
         // Add timeline text at the right end

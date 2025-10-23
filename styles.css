@@ -1,3 +1,10 @@
+body {
+    background-color: #165C7D ;
+    color:  #F0B323;
+}
+
+
+
 .portrait_thumbnail{
     width: 50px;
     height: 50px;
@@ -31,8 +38,19 @@
     z-index: 10;
 }
 
-h2 {
-    font-family: cursive;
+h1 {
     font-size: 40px;
+}
 
+h2 {
+    font-family: Snell Roundhand, cursive;
+    font-size: 50px;
+    text-decoration: underline;
+}
+
+.tick {
+    color:#000000
+}
+.x-axis{
+    color:#000000
 }
