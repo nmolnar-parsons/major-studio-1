@@ -3,61 +3,98 @@
     {
       "event": "Birth",
       "date": "1732-02-22",
-      "location": "Westmoreland County, Virginia"
+      "description": ""
     },
     {
-      "event": "Marriage to Martha Custis",
-      "date": "1759-01-06",
-      "location": "New Kent County, Virginia"
-    },
-    {
-      "event": "Appointed Commander-in-Chief of Continental Army",
-      "date": "1775-06-15",
-      "location": "Philadelphia, Pennsylvania"
-    },
-    {
-      "event": "Victory at Yorktown",
-      "date": "1781-10-19",
-      "location": "Yorktown, Virginia"
-    },
-    {
-      "event": "Elected First President of the United States",
+      "event": "Assumed Presidency",
       "date": "1789-04-30",
-      "location": "New York City, New York"
-    },
-    {
-      "event": "End of Presidency",
-      "date": "1797-03-04",
-      "location": "Philadelphia, Pennsylvania"
+      "description": ""
     },
     {
       "event": "Death",
       "date": "1799-12-14",
-      "location": "Mount Vernon, Virginia"
+      "description": "",
+      "age_at_death": 67
     }
   ],
-  "Benjamin Franklin": [
+  "John Adams": [
     {
       "event": "Birth",
-      "date": "1706-01-17",
-      "location": "Boston, Massachusetts"
+      "date": "1735-10-30",
+      "description": ""
+    },
+    {
+      "event": "Assumed Presidency",
+      "date": "1797-03-04",
+      "description": ""
     },
     {
       "event": "Death",
-      "date": "1790-04-17",
-      "location": "Philadelphia, Pennsylvania"
+      "date": "1826-07-04",
+      "description": "",
+      "age_at_death": 90
     }
   ],
   "Thomas Jefferson": [
     {
       "event": "Birth",
       "date": "1743-04-13",
-      "location": "Shadwell, Virginia"
+      "description": ""
+    },
+    {
+      "event": "Assumed Presidency",
+      "date": "1801-03-04",
+      "description": ""
     },
     {
       "event": "Death",
       "date": "1826-07-04",
-      "location": "Monticello, Virginia"
+      "description": "",
+      "age_at_death": 83
+    }
+  ],
+  "James Madison": [
+    {
+      "event": "Birth",
+      "date": "1751-03-16",
+      "description": ""
+    },
+    {
+      "event": "Assumed Presidency",
+      "date": "1809-03-04",
+      "description": ""
+    },
+    {
+      "event": "Death",
+      "date": "1836-06-28",
+      "description": "",
+      "age_at_death": 85
+    }
+  ],
+  "Alexander Hamilton": [
+    {
+      "event": "Birth",
+      "date": "1755-01-11",
+      "description": ""
+    },
+    {
+      "event": "Death",
+      "date": "1804-07-12",
+      "description": "",
+      "age_at_death": 49
+    }
+  ],
+  "Benjamin Franklin": [
+    {
+      "event": "Birth",
+      "date": "1706-01-17",
+      "description": ""
+    },
+    {
+      "event": "Death",
+      "date": "1790-04-17",
+      "description": "",
+      "age_at_death": 84
     }
   ]
 }

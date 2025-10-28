@@ -1,9 +1,7 @@
 body {
-    background-color: #165C7D ;
-    color:  #F0B323;
+    background-color: rgb(208, 199, 199);
+    color:  #ff0000;
 }
-
-
 
 .portrait_thumbnail{
     width: 50px;
@@ -39,13 +37,29 @@ body {
 }
 
 h1 {
-    font-size: 40px;
+    font-size: 60px;
+    font-family: Snell Roundhand, cursive;
+    padding-left: 20px;
+    color: #0A3161;
 }
 
-h2 {
+#dropdown_menu {
     font-family: Snell Roundhand, cursive;
     font-size: 50px;
     text-decoration: underline;
+    margin-top: 10px; 
+    margin-left: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    background-color: #B31942;
+}
+.timeline-label {
+    font-family: Snell Roundhand, cursive;
+    font-size: 40px;
+    font-weight: bold;
+    overflow-wrap: break-word;
 }
 
 .tick {
@@ -53,4 +67,20 @@ h2 {
 }
 .x-axis{
     color:#000000
+}
+
+#elected-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+
+#dropdown_image {
+    width:70px; 
+    height:70px; 
+    object-fit:cover; 
+    border-radius:8px; 
+    margin-left:10px; 
+    margin-top: 12px;
 }
