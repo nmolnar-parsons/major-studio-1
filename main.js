@@ -5,11 +5,8 @@ let timeline_dates = null; // global variable
 
 d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
 
-    //sitter counts
-    const sitterCounts = Array.from(d3.rollup(data, v => v.length, d => d.Sitter))
-        .reduce((acc, [sitter, count]) => (acc[sitter] = count, acc), {});
-
     //filter for George Washington and between 1780 and 1810
+    // landing page histogram data
     var gwData = data.filter(d => 
         d.Sitter === "George Washington" &&
         // !["unidentified", "Unidentified Woman", "Unidentified Man"].includes(d.Sitter)
@@ -74,7 +71,7 @@ d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
                 .attr("y", timelineY)
                 .attr("width", 10)
                 .attr("height", axisY - timelineY)
-                .attr("fill", "black")
+                .attr("fill", "#0A3161")
                 .attr("opacity", 0);
 
             electedText = g.append("text")
@@ -92,9 +89,9 @@ d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
         let deathRect = null, deathText = null;
     
         deathRect = g.append("rect")
-            .attr("x", x_scale(+death.date.substring(0,4)) - 5)
+            .attr("x", x_scale(+death.date.substring(0,4)))
             .attr("y", timelineY)
-            .attr("width", 5)
+            .attr("width", 10)
             .attr("height", axisY - timelineY)
             .attr("fill", "#000000ff")
             .attr("opacity", 0);
@@ -154,7 +151,7 @@ d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
         d3.select("#histogram").selectAll("*").remove();
 
         //dimensions
-        const margin = ({top: 150, right: 50, bottom: 100, left: 100});
+        const margin = ({top: 150, right: 50, bottom: 100, left: 50});
         const width = window.innerWidth*0.99;
         const height = window.innerHeight*0.85;
 
@@ -188,13 +185,9 @@ d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
         //Dropdown Image next to menu
         const dropdownImg = document.getElementById("dropdown_image");
         const sorted = personData.slice().sort((a, b) => +a.Clean_Date - +b.Clean_Date);
-        if (sorted.length > 0) {
-            dropdownImg.src = sorted[0].face_urls.split("; ")[0];
-            dropdownImg.alt = `${selectedPerson} portrait ${sorted[0].Clean_Date}`;
-        } else {
-            dropdownImg.src = "";
-            dropdownImg.alt = "";
-        }
+        dropdownImg.src = sorted[0].face_urls.split("; ")[0];
+        dropdownImg.alt = `${selectedPerson} portrait ${sorted[0].Clean_Date}`;
+        
     
 
 
@@ -322,13 +315,28 @@ d3.csv("Project_2/Data/revperiod_portraits_with_faces.csv").then(data => {
             select.appendChild(option);
         });
 
-        // when dropdown changes, change the chart
+
+        function setDescription(person) {
+            const descBox = document.getElementById("description-box");
+            const arr = timeline_dates[person];
+            if (arr && arr.length > 0) {
+                const summaryObj = arr.find(obj => obj.summary);
+                descBox.textContent = summaryObj ? summaryObj.summary : "";
+            } else {
+                descBox.textContent = "";
+            }
+        }
+
+        // when dropdown changes, change the chart and description
         select.addEventListener("change", function() {
             const selectedPerson = this.value;
             drawChart(selectedPerson); // redraw chart for selected person
-
+            setDescription(selectedPerson);
         });
-        drawChart(); // initial draw
+
+        // Initial draw and description
+        drawChart();
+        setDescription(select.value || "George Washington");
     });
 
     
