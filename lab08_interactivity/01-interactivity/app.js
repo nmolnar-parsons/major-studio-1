@@ -56,10 +56,23 @@ async function dataLoad() {
     (d, i) => {
        d.id = d[CLASS] + "_" + i; // need a unique ID here
     }
-  )
+  ) // how do we give each bar a unique ID? 
+  // d is each row, i is iterator
+  // id is d_class_i
+
+  // why do we need this?
+    // unique ids for each row in the dataset
+    // so we don't need to iterate over the dataset each time we need to do something specific to each row
+    // tooltip can 
+
+    // required in a lot of frameworks
+    // in order for state stuff??
+
+
   
   // and copy the data array into our global data variable
   data = Array.from(source);
+  console.log(data)
   
   // drawing can only happen after data is here
   draw();
@@ -79,11 +92,13 @@ function onCheckboxChange(d) {
   
   // this array will hold the new checked values, whether something has been checked or unchecked
   let nextCheckedValues = Array.from(state.filters.checked);
+  console.log(nextCheckedValues)
 
   // if box is checked, uncheck it
   if (index > -1) {
     // take it out of the array of checked values
-    nextCheckedValues.splice(index, 1)    
+    nextCheckedValues.splice(index, 1)   
+    console.log(nextCheckedValues) 
 
     // otherwise, add it to the checked values
   } else {
@@ -95,11 +110,13 @@ function onCheckboxChange(d) {
   
   // and update the visualization
   draw();
+  // need to redraw because the state has changed
+
 }
 
 // when a mouse moves over a bar
 function onMouseEvent(d) {
-  console.log(d.target.__data__);
+  console.log(d.target.__data__); //__data__ is where d3 stores data assigned to an element
   // when the cursor rolls over the bar, make the tooltip visible
   if (d.type === "mouseenter") {
     console.log("mouseenter")
@@ -208,10 +225,17 @@ function initializeLayout() {
 function draw() {
   
   // filter data based on state.filters.checked
-  let filteredData = data.filter(d => state.filters.checked.indexOf(d[CLASS]) > -1)
+  let filteredData = data.filter(d => state.filters.checked.indexOf(d[CLASS]) > -1) // checking in state json if Class is checked or not
+  //indexOf gives index of Class, if not > -1 it does not exist. Class that are checked will be index 0,1,2.
+
+  
+  // filters based on checked state
+
+
   
   // sort data descending
   filteredData.sort((a, b) => d3.descending(a[SORT_BY], b[SORT_BY]));
+
 
   // update our scales based on filteredData
   xScale.domain([0, d3.max(filteredData, d => d[SORT_BY] )]);
@@ -264,3 +288,8 @@ function draw() {
 
 // this function is only called once
 dataLoad();
+
+
+// definition is defined first
+// can call something that hasn't been defined yet
+

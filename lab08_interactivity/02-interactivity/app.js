@@ -73,12 +73,15 @@ function onCheckboxChange(d) {
   // if box is checked, uncheck it
   if (isBoxChecked) {
     nextCheckedValues = [
-      ...state.filters.checked.slice(0, index),
+      //slice out checked 
+      ...state.filters.checked.slice(0, index), //... is array explode, takes array and flattens it into elements
+      
+
       ...state.filters.checked.slice(index + 1),
     ];
     // otherwise, add it to the checked values
   } else {
-    nextCheckedValues = [...state.filters.checked, d.target.name];
+    nextCheckedValues = [...state.filters.checked, d.target.name]; // ok this one makes sense
   }
   setState({
     filters: {
