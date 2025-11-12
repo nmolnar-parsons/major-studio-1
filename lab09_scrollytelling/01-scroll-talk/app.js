@@ -13,12 +13,12 @@ d3.json("./jabberwocky.json").then(data => {
   section.each(function() {
     const { top } = this.getBoundingClientRect();
     sectionPositions.push(top);
-  });
+  }); // array of numbers, where each section's top is
 
   // https://vallandingham.me/scroller.html#detecting-the-active-section
   function position() {
     var pos = window.scrollY - 10;
-    var sectionIndex = d3.bisect(sectionPositions, pos);
+    var sectionIndex = d3.bisect(sectionPositions, pos); // .bisect() finds where it can add current position into the array
     sectionIndex = Math.min(section.size() - 1, sectionIndex);
 
     if (state.currentIndex !== sectionIndex) {
@@ -28,7 +28,10 @@ d3.json("./jabberwocky.json").then(data => {
     }
   }
 
-  window.addEventListener("scroll", position);
+  window.addEventListener("scroll", position); // whenever we scroll, check position
+  // where are we within the sections?
+  //ScrollY changes based on how far scrolled
+ 
 
   draw();
 });
