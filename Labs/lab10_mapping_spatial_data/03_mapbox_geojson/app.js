@@ -12,7 +12,7 @@ d3.json('africa.geo.json')
     }
     // https://www.mapbox.com/mapbox-gl-js/api/#accesstoken
     // TODO: add personal mapbox access token
-    mapboxgl.accessToken = ''
+    mapboxgl.accessToken = 'pk.eyJ1Ijoibm1vbG5hci1kdiIsImEiOiJjbWh4cWl4cTgwM3hpMnZweGtpa3IyZGprIn0.d7RxG-FVKTySwTvRSWtofA'
 
     // https://www.mapbox.com/mapbox-gl-js/api/#map
     let map = new mapboxgl.Map({
@@ -38,15 +38,22 @@ d3.json('africa.geo.json')
     let transform = d3.geoTransform({point: projectPoint}) 
     let path = d3.geoPath().projection(transform) // https://github.com/d3/d3-3.x-api-reference/blob/master/Geo-Paths.md
         
+    // Compute population extent for color scale
+    const popExtent = d3.extent(geojson.features, d => d.properties.pop_est)
+    // Create a color scale (e.g., interpolate from light yellow to dark red)
+    const colorScale = d3.scaleSequential()
+      .domain(popExtent)
+      .interpolator(d3.interpolateYlOrRd)
+
     let featureElement = svg
         .selectAll('path')
         .data(geojson.features)
-        // d3 data joins https://observablehq.com/@d3/selection-join
         .join('path')
         .attr('d', d3.geoPath().projection(transform))
         .attr('stroke', 'none')
-        .attr('fill', 'lightgray')
-        .attr('fill-opacity', 0.3)
+        // Use color scale for fill based on population
+        .attr('fill', d => colorScale(d.properties.pop_est))
+        .attr('fill-opacity', 0.8)
         .on('mouseover', function (d) {
           // https://developer.mozilla.org/en-US/docs/Web/API/Event/srcElement
           console.log(d.srcElement.__data__)
@@ -57,8 +64,11 @@ d3.json('africa.geo.json')
           d3.select('#hover').attr('fill-opacity', 1)
         })
         .on('mouseout', function (d) {
-          d3.select(this).attr('fill', 'lightgray')
-          d3.select('#hover').attr('fill-opacity', 0)
+          // Restore color scale on mouseout and hide tooltip
+          d3.select(this).attr('fill', colorScale(d.srcElement.__data__.properties.pop_est))
+          d3.select('#hover')
+            .attr('fill-opacity', 0)
+            .text('')
         })
         .on('mousemove', (d) => {
           // console.log(d3.pointer(d))
@@ -91,4 +101,4 @@ d3.json('africa.geo.json')
         update()
         svg.classed('hidden', false)
     })
-})    
+})
