@@ -97,7 +97,7 @@ d3.csv("Data/highcount_Use.csv").then(function(data) {
     let guessCount = 0;
 
     // Load sitter information from Sitter_Info.json
-    d3.json("Data/Sitter_Info.json").then(function(sitterInfoData) {
+    d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
         // Add event listener for the input box
         d3.select("#input-datalist").on("change", function() {
             const userGuess = this.value;
