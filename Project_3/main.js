@@ -5,6 +5,11 @@
     //
 
 
+// Define constant for incorrect color
+var incorrect_color = "#B31942";
+
+
+
 //read data from PortPaint_Use.csv
 d3.csv("Data/highcount_Use.csv").then(function(data) {
     console.log(data);
@@ -30,19 +35,27 @@ d3.csv("Data/highcount_Use.csv").then(function(data) {
         return;
     }
 
+    //calculate number of portraits per sitter
+    const sitterCounts = {};
+    data.forEach(d => {
+        if (sitterCounts[d.Sitter]) {
+            sitterCounts[d.Sitter]++;
+        } else {
+            sitterCounts[d.Sitter] = 1;
+        }
+    });
+    console.log("Sitter counts:", sitterCounts);
+
     //put sitter face in <div id="face-image"></div>
     face_div = d3.select("#face-image");
     const imageUrl = sitterData.face_urls;
     face_div.append("img")
         .attr("src", imageUrl)
         .attr("alt", sitterData.Sitter)
-        .attr("width", 200)
-        .attr("height", 200);
+        .attr("width", 400)
+        .attr("height", 400);
     //and consolelog their occupation, gender, and initials
     console.log("Sitter: " + sitterData.Sitter);
-    console.log("Occupation: " + sitterData.Occupation);
-    console.log("Initials: " + sitterData.first_initial + ". " + sitterData.last_initial + ".");
-    console.log("Date: " + sitterData.Clean_Date);
 
 
     //add an input element under the image for user to type guess
@@ -51,8 +64,10 @@ d3.csv("Data/highcount_Use.csv").then(function(data) {
     const input_div = d3.select("#input-boxes");
     input_div.append("input")
         .attr("type", "text")
-        .attr("id", "sitter-guess")
-        .attr("placeholder", "Type your guess here")
+        .attr("id", "input-datalist")
+        .attr("class", "form-control")
+        .attr("placeholder", "Your guess here, please:")
+        .attr("font-style", "italic")
         .attr("list", "sitter-names"); // Link to the datalist
 
     // Create a datalist element and populate it with sitter names
@@ -64,72 +79,91 @@ d3.csv("Data/highcount_Use.csv").then(function(data) {
             .attr("value", sitter);
     });
 
-    //add five "result" boxes below, add to <div id="guess_result"></div>
+    // Add five "result" boxes below, each containing five "hint-box" divs
     const result_div = d3.select("#guess_result");
     for (let i = 0; i < 5; i++) {
-        result_div.append("div")
+        const resultBox = result_div.append("div")
             .attr("class", "result-box")
-            .attr("id", "result-box-" + (i + 1))
-            .text("Guess " + (i + 1) + ": ");
+            .attr("id", "result-box-" + (i + 1));
+
+        // Add five hint-box divs for each result-box
+        ["name", "occupation", "first-initial", "last-initial", "portraits"].forEach(hint => {
+            resultBox.append("div")
+                .attr("class", "hint-box")
+                .attr("id", `result-box-${i + 1}-${hint}`);
+        });
     }
 
     // Track the number of guesses made
     let guessCount = 0;
 
-    // Add event listener for the input box
-    d3.select("#sitter-guess").on("change", function() {
-        const userGuess = this.value;
+    // Load sitter information from Sitter_Info.json
+    d3.json("Data/Sitter_Info.json").then(function(sitterInfoData) {
+        // Add event listener for the input box
+        d3.select("#input-datalist").on("change", function() {
+            const userGuess = this.value;
 
-        // Check if the guess matches the sitter for the random EDANurl
-        const isCorrect = userGuess === sitterData.Sitter;
+            // Find the guessed sitter in Sitter_Info.json
+            const guessedSitter = sitterInfoData.find(sitter => sitter.name === userGuess);
+            const isCorrect = guessedSitter && guessedSitter.name === sitterData.Sitter;
 
-        // Update the corresponding result box
-        if (guessCount < 5) {
-            const resultBox = d3.select("#result-box-" + (guessCount + 1));
-            resultBox.text(`Guess ${guessCount + 1}: ${userGuess} - `);
+            // Update the corresponding result box
+            if (guessCount < 5) {
+                const resultBoxId = `#result-box-${guessCount + 1}`;
 
-            if (isCorrect) {
-                resultBox.append("span").text(`Correct!`).style("color", "green");
-            } else {
-                const sitterInfo = data.find(d => d.Sitter === userGuess);
-                if (sitterInfo) {
-                    // Compare and color-code each attribute against the specific sitter data
-                    const occupationMatch = sitterInfo.Occupation === sitterData.Occupation;
-                    const firstInitialMatch = sitterInfo.first_initial === sitterData.first_initial;
-                    const lastInitialMatch = sitterInfo.last_initial === sitterData.last_initial;
+                // Update the name hint
+                d3.select(`${resultBoxId}-name`)
+                    .text(userGuess)
+                    .style("color", isCorrect ? "green" : incorrect_color);
 
-                    // Compare Clean_Date and determine arrow direction
-                    const guessedDate = parseInt(sitterInfo.Clean_Date, 10);
-                    const realDate = parseInt(sitterData.Clean_Date, 10);
-                    let cleanDateHint = sitterInfo.Clean_Date;
-                    let arrow = "";
+                if (isCorrect) {
+                    // Mark all hints as correct
+                    d3.select(`${resultBoxId}-occupation`).text("Correct!").style("color", "green");
+                    d3.select(`${resultBoxId}-first-initial`).text("Correct!").style("color", "green");
+                    d3.select(`${resultBoxId}-last-initial`).text("Correct!").style("color", "green");
+                    d3.select(`${resultBoxId}-portraits`).text("Correct!").style("color", "green");
+                } else if (guessedSitter) {
+                    // Compare and update each hint
+                    const targetSitter = sitterInfoData.find(sitter => sitter.name === sitterData.Sitter);
 
-                    if (!isNaN(guessedDate) && !isNaN(realDate)) {
-                        if (guessedDate < realDate) {
-                            arrow = "→"; // Guessed date is smaller
-                        } else if (guessedDate > realDate) {
-                            arrow = "←"; // Guessed date is larger
-                        }
-                    }
+                    const occupationMatch = guessedSitter.occupation === targetSitter.occupation;
+                    const firstInitialMatch = guessedSitter.first_initial === targetSitter.first_initial;
+                    const lastInitialMatch = guessedSitter.last_initial === targetSitter.last_initial;
 
-                    const cleanDateMatch = sitterInfo.Clean_Date === sitterData.Clean_Date;
+                    const guessedPortraits = guessedSitter.number_of_portraits;
+                    const realPortraits = targetSitter.number_of_portraits;
+                    let comparisonSign = guessedPortraits < realPortraits ? ">" : guessedPortraits > realPortraits ? "<" : "=";
+                    const portraitMatch = guessedPortraits === realPortraits;
 
-                    resultBox.append("span").html(`
-                        Occupation: <span style="color: ${occupationMatch ? 'green' : 'red'}">${sitterInfo.Occupation}</span>, 
-                        Initials: <span style="color: ${firstInitialMatch ? 'green' : 'red'}">${sitterInfo.first_initial}.</span> 
-                        <span style="color: ${lastInitialMatch ? 'green' : 'red'}">${sitterInfo.last_initial}.</span>, 
-                        Date: <span style="color: ${cleanDateMatch ? 'green' : 'red'}">${cleanDateHint} ${arrow}</span>
-                    `);
+                    d3.select(`${resultBoxId}-occupation`)
+                        .text(guessedSitter.occupation)
+                        .style("color", occupationMatch ? "green" : incorrect_color);
+
+                    d3.select(`${resultBoxId}-first-initial`)
+                        .text(guessedSitter.first_initial)
+                        .style("color", firstInitialMatch ? "green" : incorrect_color);
+
+                    d3.select(`${resultBoxId}-last-initial`)
+                        .text(guessedSitter.last_initial)
+                        .style("color", lastInitialMatch ? "green" : incorrect_color);
+
+                    d3.select(`${resultBoxId}-portraits`)
+                        .text(`${comparisonSign} ${guessedPortraits}`)
+                        .style("color", portraitMatch ? "green" : incorrect_color);
                 } else {
-                    resultBox.append("span").text(`No match found.`).style("color", "red");
+                    // No match found
+                    d3.select(`${resultBoxId}-occupation`).text("No match").style("color", incorrect_color);
+                    d3.select(`${resultBoxId}-first-initial`).text("No match").style("color", incorrect_color);
+                    d3.select(`${resultBoxId}-last-initial`).text("No match").style("color", incorrect_color);
+                    d3.select(`${resultBoxId}-portraits`).text("No match").style("color", incorrect_color);
                 }
+
+                guessCount++;
             }
 
-            guessCount++;
-        }
-
-        // Clear the input box for the next guess
-        this.value = "";
+            // Clear the input box for the next guess
+            this.value = "";
+        });
     });
 
 });
