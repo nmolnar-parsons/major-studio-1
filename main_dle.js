@@ -12,7 +12,7 @@ var incorrect_color = "#B31942";
 let sitterData;
 
 //read data from PortPaint_Use.csv
-d3.csv("Data/highcount_Use.csv").then(function(data) {
+d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     console.log(data);
 
     //get list of unique sitters
@@ -47,12 +47,22 @@ d3.csv("Data/highcount_Use.csv").then(function(data) {
 
     //put sitter face in <div id="face-image"></div>
     face_div = d3.select("#face-image");
-    const imageUrl = sitterData.face_urls;
-    face_div.append("img")
-        .attr("src", imageUrl)
-        .attr("alt", sitterData.Sitter)
-        .attr("width", 400)
-        .attr("height", 350);
+    const imageUrl = sitterData.file_path;
+
+    // Create an image element to load the image and calculate its aspect ratio
+    const tempImage = new Image();
+    tempImage.src = "Data/" + imageUrl;
+    tempImage.onload = function() {
+        const aspectRatio = tempImage.width / tempImage.height;
+        const height = 300; // Fixed max height
+        const width = height * aspectRatio; // Calculate width based on aspect ratio
+
+        face_div.append("img")
+            .attr("src", "Data/" + imageUrl)
+            .attr("alt", sitterData.Sitter)
+            .attr("width", width)
+            .attr("height", height);
+    };
     //and consolelog their occupation, gender, and initials
     console.log("Sitter: " + sitterData.Sitter);
 
