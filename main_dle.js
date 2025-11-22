@@ -54,7 +54,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     tempImage.src = "Data/" + imageUrl;
     tempImage.onload = function() {
         const aspectRatio = tempImage.width / tempImage.height;
-        const height = 300; // Fixed max height
+        const height = 520;//0.7 * window.innerHeight; // Fixed max height
         const width = height * aspectRatio; // Calculate width based on aspect ratio
 
         face_div.append("img")
@@ -90,7 +90,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
 
     // Add five "result" boxes below, each containing five "hint-box" divs
     const result_div = d3.select("#guess_result");
-    for (let i = 0; i < 5; i++) {
+    for (let i = 0; i < 6; i++) {
         const resultBox = result_div.append("div")
             .attr("class", "result-box")
             .attr("id", "result-box-" + (i + 1));
@@ -98,7 +98,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
         // Add five hint-box divs for each result-box
         ["name", "occupation", "first-initial", "last-initial", "portraits"].forEach(hint => {
             resultBox.append("div")
-                .attr("class", "hint-box")
+                .attr("class", i === 0 ? "hint-box active" : "hint-box inactive")
                 .attr("id", `result-box-${i + 1}-${hint}`);
         });
     }
@@ -112,13 +112,24 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
         d3.select("#input-datalist").on("change", function() {
             const userGuess = this.value;
 
+            // Validate that the input is in the sitters list
+            if (!sitters.includes(userGuess)) {
+                // Don't clear the input, just return without processing
+                return;
+            }
+
             // Find the guessed sitter in Sitter_Info.json
             const guessedSitter = sitterInfoData.find(sitter => sitter.name === userGuess);
             const isCorrect = guessedSitter && guessedSitter.name === sitterData.Sitter;
 
             // Update the corresponding result box
-            if (guessCount < 5) {
+            if (guessCount < 6) {
                 const resultBoxId = `#result-box-${guessCount + 1}`;
+
+                // Remove active/inactive classes from current row
+                d3.selectAll(`${resultBoxId} .hint-box`)
+                    .classed("active", false)
+                    .classed("inactive", false);
 
                 // Update the name hint
                 d3.select(`${resultBoxId}-name`)
@@ -126,15 +137,19 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                     .style("color", isCorrect ? "green" : incorrect_color);
 
                 if (isCorrect) {
-                    // Mark all hints as correct
-                    d3.select(`${resultBoxId}-occupation`).text("Correct!").style("color", "green");
-                    d3.select(`${resultBoxId}-first-initial`).text("Correct!").style("color", "green");
-                    d3.select(`${resultBoxId}-last-initial`).text("Correct!").style("color", "green");
-                    d3.select(`${resultBoxId}-portraits`).text("Correct!").style("color", "green");
+                    // Mark all hints as correct with actual values
+                    const targetSitter = sitterInfoData.find(sitter => sitter.name === sitterData.Sitter);
+                    
+                    d3.select(`${resultBoxId}-occupation`).text(targetSitter.occupation).style("color", "green");
+                    d3.select(`${resultBoxId}-first-initial`).text(targetSitter.first_initial).style("color", "green");
+                    d3.select(`${resultBoxId}-last-initial`).text(targetSitter.last_initial).style("color", "green");
+                    d3.select(`${resultBoxId}-portraits`).text(`= ${targetSitter.number_of_portraits}`).style("color", "green");
 
-                    // Show the "Correct!" popup
-                    d3.select("#sitter-name").text("Correct!").style("color", "green");
-                    d3.select("#sitter-popup").classed("hidden", false);
+                    // Change reset text to "play again?"
+                    d3.select("#reset").text("play again?");
+                    
+                    // Disable the input box
+                    d3.select("#input-datalist").attr("disabled", true);
                 } else if (guessedSitter) {
                     // Compare and update each hint
                     const targetSitter = sitterInfoData.find(sitter => sitter.name === sitterData.Sitter);
@@ -163,33 +178,43 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                     d3.select(`${resultBoxId}-portraits`)
                         .text(`${comparisonSign} ${guessedPortraits}`)
                         .style("color", portraitMatch ? "green" : incorrect_color);
-                } else {
-                    // No match found
-                    d3.select(`${resultBoxId}-occupation`).text("No match").style("color", incorrect_color);
-                    d3.select(`${resultBoxId}-first-initial`).text("No match").style("color", incorrect_color);
-                    d3.select(`${resultBoxId}-last-initial`).text("No match").style("color", incorrect_color);
-                    d3.select(`${resultBoxId}-portraits`).text("No match").style("color", incorrect_color);
                 }
 
                 guessCount++;
+                
+                // Activate the next row if available
+                if (guessCount < 6) {
+                    const nextResultBoxId = `#result-box-${guessCount + 1}`;
+                    d3.selectAll(`${nextResultBoxId} .hint-box`)
+                        .classed("inactive", false)
+                        .classed("active", true);
+                }
+                
+                // Only clear the input box after a successful guess
+                this.value = "";
             }
-
-            // Clear the input box for the next guess
-            this.value = "";
         });
     });
 
 });
 
-// Add event listener to reset the game when the title is clicked
+
 document.addEventListener("DOMContentLoaded", function() {
     d3.select("#reset").on("click", function() {
-        // Reveal the current sitter in the popup
-        if (sitterData) {
-            d3.select("#sitter-name").text(`The sitter is: ${sitterData.Sitter}`);
-            d3.select("#sitter-popup").classed("hidden", false);
+        // Check if the text is "play again?"
+        const resetText = d3.select("#reset").text();
+        
+        if (resetText === "play again?") {
+            // Just reload the page without showing popup
+            location.reload();
         } else {
-            console.error("Sitter data is not available.");
+            // Reveal the current sitter in the popup (give up scenario)
+            if (sitterData) {
+                d3.select("#sitter-name").text(`The sitter is: ${sitterData.Sitter}`);
+                d3.select("#sitter-popup").classed("hidden", false);
+            } else {
+                console.error("Sitter data is not available.");
+            }
         }
     });
 

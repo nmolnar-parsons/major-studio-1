@@ -12,9 +12,25 @@ body{
 
 #game_area {
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    flex-direction: row;
+    justify-content: center;
+    align-items: flex-start;
     margin-top: 20px;
+    gap: 40px;
+}
+
+#face-image {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    margin-top: 40px; 
+}
+
+#guess {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
 }
 
 #input-boxes {
@@ -49,6 +65,16 @@ body{
     min-width: 7rem;
     max-width: 7rem;
     min-height: 4.5rem;
+}
+
+.hint-box.inactive {
+    opacity: 0.3;
+    background-color: rgba(200, 200, 200, 0.3);
+}
+
+.hint-box.active {
+    /* border-color: #0066cc; */
+    border-width: 3px;
 }
 
 .legend-cat{
