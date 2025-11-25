@@ -47,14 +47,16 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
 
     //put sitter face in <div id="face-image"></div>
     face_div = d3.select("#face-image");
+
+
     const imageUrl = sitterData.file_path;
 
-    // Create an image element to load the image and calculate its aspect ratio
+    // Create an image element to load the image
     const tempImage = new Image();
     tempImage.src = "Data/" + imageUrl;
     tempImage.onload = function() {
         const aspectRatio = tempImage.width / tempImage.height;
-        const height = 520;//0.7 * window.innerHeight; // Fixed max height
+        const height = 520; // Fixed height
         const width = height * aspectRatio; // Calculate width based on aspect ratio
 
         face_div.append("img")
@@ -62,6 +64,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
             .attr("alt", sitterData.Sitter)
             .attr("width", width)
             .attr("height", height);
+
     };
     //and consolelog their occupation, gender, and initials
     console.log("Sitter: " + sitterData.Sitter);
@@ -95,8 +98,8 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
             .attr("class", "result-box")
             .attr("id", "result-box-" + (i + 1));
 
-        // Add five hint-box divs for each result-box
-        ["name", "occupation", "first-initial", "last-initial", "portraits"].forEach(hint => {
+        // Update hint categories to include "length-of-name" instead of "portraits"
+        ["name", "occupation", "first-initial", "last-initial", "length-of-name"].forEach(hint => {
             resultBox.append("div")
                 .attr("class", i === 0 ? "hint-box active" : "hint-box inactive")
                 .attr("id", `result-box-${i + 1}-${hint}`);
@@ -134,16 +137,31 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                 // Update the name hint
                 d3.select(`${resultBoxId}-name`)
                     .text(userGuess)
-                    .style("color", isCorrect ? "green" : incorrect_color);
+                    .style("color", isCorrect ? "#0A3161" : incorrect_color);
 
                 if (isCorrect) {
                     // Mark all hints as correct with actual values
                     const targetSitter = sitterInfoData.find(sitter => sitter.name === sitterData.Sitter);
-                    
-                    d3.select(`${resultBoxId}-occupation`).text(targetSitter.occupation).style("color", "green");
-                    d3.select(`${resultBoxId}-first-initial`).text(targetSitter.first_initial).style("color", "green");
-                    d3.select(`${resultBoxId}-last-initial`).text(targetSitter.last_initial).style("color", "green");
-                    d3.select(`${resultBoxId}-portraits`).text(`= ${targetSitter.number_of_portraits}`).style("color", "green");
+
+                    d3.select(`${resultBoxId}-occupation`)
+                        .text(targetSitter.occupation)
+                        .style("background-color", "#0A3161")
+                        .style("color", "white");
+
+                    d3.select(`${resultBoxId}-first-initial`)
+                        .text(targetSitter.first_initial)
+                        .style("background-color", "#0A3161")
+                        .style("color", "white");
+
+                    d3.select(`${resultBoxId}-last-initial`)
+                        .text(targetSitter.last_initial)
+                        .style("background-color", "#0A3161") 
+                        .style("color", "white");
+
+                    d3.select(`${resultBoxId}-length-of-name`)
+                        .text("just right!")
+                        .style("background-color", "#0A3161")
+                        .style("color", "white");
 
                     // Change reset text to "play again?"
                     d3.select("#reset").text("play again?");
@@ -158,26 +176,29 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                     const firstInitialMatch = guessedSitter.first_initial === targetSitter.first_initial;
                     const lastInitialMatch = guessedSitter.last_initial === targetSitter.last_initial;
 
-                    const guessedPortraits = guessedSitter.number_of_portraits;
-                    const realPortraits = targetSitter.number_of_portraits;
-                    let comparisonSign = guessedPortraits < realPortraits ? ">" : guessedPortraits > realPortraits ? "<" : "=";
-                    const portraitMatch = guessedPortraits === realPortraits;
+                    const guessedLength = guessedSitter.length_of_name;
+                    const realLength = targetSitter.length_of_name;
+                    const lengthHint = guessedLength === realLength ? "just right!" : guessedLength < realLength ? "too short!" : "too long!";
 
                     d3.select(`${resultBoxId}-occupation`)
                         .text(guessedSitter.occupation)
-                        .style("color", occupationMatch ? "green" : incorrect_color);
+                        .style("background-color", occupationMatch ? "#0A3161" : "#B31942") // Blue if correct, red if wrong
+                        .style("color", "white");
 
                     d3.select(`${resultBoxId}-first-initial`)
                         .text(guessedSitter.first_initial)
-                        .style("color", firstInitialMatch ? "green" : incorrect_color);
+                        .style("background-color", firstInitialMatch ? "#0A3161" : "#B31942") // Blue if correct, red if wrong
+                        .style("color", "white");
 
                     d3.select(`${resultBoxId}-last-initial`)
                         .text(guessedSitter.last_initial)
-                        .style("color", lastInitialMatch ? "green" : incorrect_color);
+                        .style("background-color", lastInitialMatch ? "#0A3161" : "#B31942") // Blue if correct, red if wrong
+                        .style("color", "white");
 
-                    d3.select(`${resultBoxId}-portraits`)
-                        .text(`${comparisonSign} ${guessedPortraits}`)
-                        .style("color", portraitMatch ? "green" : incorrect_color);
+                    d3.select(`${resultBoxId}-length-of-name`)
+                        .text(lengthHint)
+                        .style("background-color", lengthHint === "just right!" ? "#0A3161" : "#B31942") // Blue if correct, red if wrong
+                        .style("color", "white");
                 }
 
                 guessCount++;

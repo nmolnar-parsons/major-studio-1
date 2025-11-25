@@ -1,6 +1,16 @@
+:root {
+    --box-width: 8.5rem; /* Global variable for box width */
+}
+
+
 body{
-    font-family: Arial, sans-serif;
+    font-family: 'Arial Black', Gadget, sans-serif;
     background-color: rgb(208, 199, 199);
+}
+
+h1 {
+    font-family: Snell Roundhand, cursive;
+    font-size: 60px;
 }
 
 #title {
@@ -8,23 +18,29 @@ body{
     flex-direction: column;
     text-align: center;
     align-items: center;
+    margin-bottom: 20px; /* Add spacing below the title */
+}
+
+#face-image {
+    float: left; /* Position #face-image to the left */
+    position: static;
+    margin-right: 40px; /* Add spacing between #face-image and #game_area */
+    margin-left: 15vw;
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end; /* Align content (image) to the right */
+    align-items: center; /* Vertically center the content */
+    width: 364px; /* Fixed width */
+    height: 520px; /* Fixed height */
+    background-color: #f0f0f000; /* Placeholder background */
 }
 
 #game_area {
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: flex-start;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start; /* Align content to the left */
     margin-top: 20px;
     gap: 40px;
-}
-
-#face-image {
-    flex: 0 0 auto;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    margin-top: 40px; 
 }
 
 #guess {
@@ -36,7 +52,9 @@ body{
 #input-boxes {
     display: flex;
     flex-direction: column;
-    align-items: center;
+    align-items: left;
+    margin-left: 5px;
+    min-width: 2.5 * var(--box-width);
 }
 
 .result-box {
@@ -55,16 +73,17 @@ body{
     flex: 1;
     text-align: center;
     border: 2px solid black;
-    background-color: rgba(255, 255, 255, 0.667);
+    background-color: rgba(255, 255, 255, 0.667); /* Default background */
     border-radius: 10px;
     font-size: 1rem;
     font-weight: 700;
     padding: 5px;
     margin: 0 5px;
     box-sizing: border-box;
-    min-width: 7rem;
-    max-width: 7rem;
+    min-width: var(--box-width); /* Use global variable for width */
+    max-width: var(--box-width); /* Use global variable for width */
     min-height: 4.5rem;
+    color: white; /* Ensure hint text is white */
 }
 
 .hint-box.inactive {
@@ -81,6 +100,7 @@ body{
     display: flex;
     align-items: center; /* Vertically center the text */
     justify-content: center; /* Horizontally center the text */
+    font-size: 1rem;
     flex: 1;
     text-align: center;
     border: 2px solid black;
@@ -91,8 +111,8 @@ body{
     padding: 5px;
     margin: 0 5px;
     box-sizing: border-box;
-    min-width: 7rem;
-    max-width: 7rem;
+    min-width: var(--box-width); /* Use global variable for width */
+    max-width: var(--box-width); /* Use global variable for width */
     min-height: 2rem;
 }
 
