@@ -1,0 +1,376 @@
+body {
+    background-color: rgb(208, 199, 199);
+    color:  #ff0000;
+    scroll-snap-type: y mandatory;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+}
+
+
+p {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    color: #0A3161;
+    font-size: 15px;
+    overflow-wrap: break-word;
+    margin-left: 20px;
+    margin-top: 30px;
+    max-width: 600px;
+}
+
+
+.portrait_thumbnail{
+    width: 50px;
+    height: 50px;
+}
+
+.title-bar {
+    display: flex;
+    align-items: center;
+    gap: 20px; /* space between title and button */
+}
+
+.x-axis text,
+.y-axis text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    color: #0A3161;
+    font-size: 15px;
+}
+
+/* Add a scrollable container for sections */
+#snap-container {
+    height: 100vh;
+    overflow-y: scroll;
+    overflow-x: hidden; /* Prevent horizontal scroll */
+    scroll-snap-type: y mandatory;
+    width: 100vw; /* Ensure container does not exceed viewport width */
+}
+
+/* Each section snaps to start */
+section {
+    height: 100vh;
+    scroll-snap-align: start;
+    width: 100vw; /* Prevent section from exceeding viewport width */
+    box-sizing: border-box;
+    position: relative; /* Added for absolute positioning of arrow button */
+}
+
+section #home {
+    scroll-snap-align: start;
+    margin-top: 20px;
+}
+
+
+#histogram{
+    position: relative;
+    background-color: rgb(208, 199, 199);
+}
+
+#reset-button {
+    position: absolute;
+    left: 10px;
+    bottom: 10px;
+    padding: 5px 10px;
+    font-size: 14px;
+    cursor: pointer;
+    z-index: 10;
+}
+
+
+#dropdown_menu {
+    font-family: Snell Roundhand, cursive;
+    font-size: 40px;
+    text-decoration: underline;
+    color: #ffffff;
+    margin-top: 10px; 
+    margin-left: 20px;
+    padding-left: 10px;
+    padding-right: 10px;
+    box-sizing: border-box;
+    border-radius: 16px;
+    background-color: #0a316193;
+}
+/* Ensure background color stays when clicked/focused */
+#dropdown_menu:focus,
+#dropdown_menu:active {
+    background-color: #0a316193;
+}
+.timeline-label {
+    font-family: Snell Roundhand, cursive;
+    font-size: 40px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+
+.tick {
+    color:#000000
+}
+.x-axis{
+    color:#000000
+}
+
+#elected-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 16px;
+    font-weight: bold;
+    overflow-wrap: break-word;
+}
+
+#dropdown_image {
+    width:70px; 
+    height:70px; 
+    object-fit:cover; 
+    border-radius:8px; 
+    margin-left:10px; 
+    margin-top: 12px;
+}
+
+#description-box {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    color: #0A3161;
+    font-size: 15px;
+    overflow-wrap: break-word;
+    margin-left: 20px;
+    margin-top: 30px;
+    max-width: 600px;
+}
+
+
+
+#home {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+
+
+.Main_Title {
+    font-size: 70px;
+    padding-top: 10px;
+    padding-left: 20px;
+    color: #0A3161;
+}
+
+
+#home .Main_Title {
+    text-align: center;
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+}
+
+#subtitle {
+    font-size: 20px;
+    text-align: center;
+    margin: 0 auto;
+    z-index: 2;
+    position: relative;
+    color: #0A3161;
+
+}
+
+#viz_title {
+    font-size: 50px;
+    padding-top: 10px;
+    padding-left: 150px; /* align with barplot/histogram left margin */
+    color: #0A3161;
+    text-align: left;
+}
+
+#barplot_subtitle {
+    padding-left: 130px; /* align with barplot/histogram left margin */
+    font-size: 20px;
+}
+
+#barplot_context {
+    padding-left: 130px; /* align with barplot/histogram left margin */
+    white-space: nowrap;
+}
+
+
+
+#face_container {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    pointer-events: none; /* allow clicks to pass through */
+    z-index: 1;
+}
+
+#face_container img {
+    position: absolute;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+}
+
+.chart-label {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    /* color: #0A3161; */ /* Not effective for SVG <text> */
+    fill: #0A3161;        /* Use fill for SVG <text> */
+    font-size: 15px;
+    overflow-wrap: break-word;
+    margin-left: 20px;
+    margin-top: 30px;
+    max-width: 600px;
+    font-weight: normal;
+}
+
+.barplot-label-text {
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 15px;
+    fill: #0A3161;
+    color: #0A3161;
+}
+
+
+
+/* Styles for the floating arrow button */
+.arrow-btn {
+    position: absolute;
+    left: 50%;
+    bottom: 12px; /* move lower on the page */
+    transform: translateX(-50%);
+    background: #0a316193;
+    color: #fff;
+    border: none;
+    border-radius: 12px; /* rectangle with rounded corners */
+    width: 100px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 2rem;
+    cursor: pointer;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.18);
+    transition: background 0.2s;
+}
+
+.arrow-btn:hover {
+    background: #b31942;
+}
+
+.arrow {
+    pointer-events: none;
+}
+
+/* Popup modal for face details */
+#popup-modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: none; /* show via JS */
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+#popup-modal {
+    background: #ffffff;
+    border-radius: 12px;
+    max-width: 90vw; /* fits within 1080 width */
+    max-height: 90vh; /* fits within 1920 height */
+    width: 800px; /* reasonable size on desktop, will shrink on smaller screens */
+    overflow: auto;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.4);
+    padding: 24px;
+    box-sizing: border-box;
+    display: flex;
+    gap: 20px;
+    align-items: flex-start;
+}
+
+#popup-modal img.popup-thumb {
+    width: 320px;
+    height: auto;
+    max-height: 70vh;
+    object-fit: cover;
+    border-radius: 8px;
+    flex-shrink: 0;
+}
+
+/* New: cut-out face image inside the popup (between link and artist) */
+#popup-modal img.popup-face {
+    /* don't force both width and height — use max constraints so aspect ratio is preserved */
+    width: auto;
+    height: auto;
+    max-width: 120px;
+    max-height: 120px;
+    object-fit: cover;      /* fill the box while preserving aspect ratio */
+    border-radius: 5%;     /* circular cut-out look */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    margin: 8px 0;
+    display: none; /* shown when face_urls exists */
+}
+
+/* Ensure link and meta spacing */
+#popup-modal .popup-details .meta + .popup-link,
+#popup-modal .popup-link + img.popup-face {
+    margin-top: 8px;
+}
+
+#popup-modal .popup-details {
+    color: #0A3161;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    justify-content: center;
+}
+
+#popup-modal .popup-details .sitter-name {
+    font-size: 28px;
+    font-weight: bold;
+}
+
+#popup-modal .popup-details .meta {
+    font-size: 18px;
+    color: #333;
+}
+
+#popup-modal .popup-close {
+    position: absolute;
+    right: 24px;
+    top: 18px;
+    background: transparent;
+    border: none;
+    color: #B31942;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+#popup-modal .popup-link {
+    display: none; /* shown when collectionsURL available */
+    margin-top: 8px;
+    color: #0A3161;
+    font-weight: bold;
+    text-decoration: underline;
+}
+
+#popup-modal .popup-link[aria-hidden="true"] {
+    display: none;
+}
+
+/* small screens */
+@media (max-width: 900px) {
+    #popup-modal {
+        width: 95vw;
+        flex-direction: column;
+        align-items: center;
+    }
+    #popup-modal img.popup-thumb {
+        width: 80%;
+        max-height: 40vh;
+    }
+    #popup-modal .popup-details .sitter-name { font-size: 22px; }
+    #popup-modal .popup-details .meta { font-size: 16px; }
+    #popup-modal img.popup-face {
+        max-width: 90px;
+        max-height: 90px;
+    }
+}

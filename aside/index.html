@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MS1 Midterm Review</title>
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <script src="main.js"></script>
+    <div id="snap-container">
+        <section id="home">
+            <h1 class="Main_Title">Faces of the Revolution</h1>
+
+            <div id="face_container"></div>
+            <button class="arrow-btn" id="arrow-home" aria-label="Next section">
+                <span class="arrow">&#8595;</span>
+            </button>
+        </section>
+
+        <section id="barplot_aside">
+            <h1 id="viz_title"></h1>
+            <p id="barplot_subtitle"></p>
+            <div id="barplot-viz"></div>
+            <p id="barplot_context"></p>
+            <button class="arrow-btn" id="arrow-barplot" aria-label="Next section">
+                <span class="arrow">&#8595;</span>
+            </button>
+        </section>
+
+        <section id="main_viz">
+            <div class="title-bar">
+                <h1 id="viz_title">Faces of the Revolution</h1>
+                <img id="dropdown_image">
+                <select id="dropdown_menu"></select>
+                <p id = "description-box"></p>
+            </div>
+            <div id="histogram-container" style="position: relative;">
+                <svg id="histogram"></svg>
+            </div>
+            <button class="arrow-btn" id="arrow-mainviz" aria-label="Previous Section">
+                <span class="arrow">&#8593;</span>
+            </button>
+        </section>
+    
+        
+    </div>
+
+    <script>
+    document.getElementById('arrow-home').onclick = function() {
+        document.getElementById('barplot_aside').scrollIntoView({behavior: 'smooth'});
+    };
+    document.getElementById('arrow-mainviz').onclick = function() {
+        document.getElementById('barplot_aside').scrollIntoView({behavior: 'smooth'});
+    };
+    document.getElementById('arrow-barplot').onclick = function() {
+        document.getElementById('main_viz').scrollIntoView({behavior: 'smooth'});
+    };
+    </script>
+</body>

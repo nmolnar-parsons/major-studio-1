@@ -1,0 +1,186 @@
+:root {
+    --box-width: 8.5rem; /* Global variable for box width */
+}
+
+
+body{
+    font-family: 'Arial Black', Gadget, sans-serif;
+    background-color: rgb(208, 199, 199);
+}
+
+h1 {
+    font-family: Snell Roundhand, cursive;
+    font-size: 60px;
+}
+
+#title {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    align-items: center;
+    margin-bottom: 20px; /* Add spacing below the title */
+}
+
+#face-image {
+    float: left; /* Position #face-image to the left */
+    position: static;
+    margin-right: 40px; /* Add spacing between #face-image and #game_area */
+    margin-left: 15vw;
+    margin-top: 40px;
+    display: flex;
+    justify-content: flex-end; /* Align content (image) to the right */
+    align-items: center; /* Vertically center the content */
+    width: 364px; /* Fixed width */
+    height: 520px; /* Fixed height */
+    background-color: #f0f0f000; /* Placeholder background */
+}
+
+#game_area {
+    display: flex;
+    flex-direction: column; /* Stack content vertically */
+    align-items: flex-start; /* Align content to the left */
+    margin-top: 20px;
+    gap: 40px;
+}
+
+#guess {
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+}
+
+#input-boxes {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-left: 5px;
+    min-width: 2.5 * var(--box-width);
+}
+
+.result-box {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+.hint-box {
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+    flex: 1;
+    text-align: center;
+    border: 2px solid black;
+    background-color: rgba(255, 255, 255, 0.667); /* Default background */
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 5px;
+    margin: 0 5px;
+    box-sizing: border-box;
+    min-width: var(--box-width); /* Use global variable for width */
+    max-width: var(--box-width); /* Use global variable for width */
+    min-height: 4.5rem;
+    color: white; /* Ensure hint text is white */
+}
+
+.hint-box.inactive {
+    opacity: 0.3;
+    background-color: rgba(200, 200, 200, 0.3);
+}
+
+.hint-box.active {
+    /* border-color: #0066cc; */
+    border-width: 3px;
+}
+
+.legend-cat{
+    display: flex;
+    align-items: center; /* Vertically center the text */
+    justify-content: center; /* Horizontally center the text */
+    font-size: 1rem;
+    flex: 1;
+    text-align: center;
+    border: 2px solid black;
+    background-color: rgba(255, 255, 255, 0.667);
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: 700;
+    padding: 5px;
+    margin: 0 5px;
+    box-sizing: border-box;
+    min-width: var(--box-width); /* Use global variable for width */
+    max-width: var(--box-width); /* Use global variable for width */
+    min-height: 2rem;
+}
+
+input{
+    font-size: 1.2rem;
+    min-width: 400px;
+    direction: ltr;
+}
+
+#legend {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+    width: 100%;
+    max-width: 600px;
+}
+
+#reset {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 1.5rem;
+    color: blue;
+    margin-top: 10px;
+}
+
+#reset:hover {
+    cursor: pointer;
+    text-decoration: underline;
+}
+
+#sitter-popup {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+#sitter-popup-content {
+    background-color: white;
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+#sitter-popup.hidden {
+    display: none;
+}
+
+#close-popup {
+    margin-top: 10px;
+    padding: 5px 10px;
+    border: none;
+    background-color: #B31942;
+    color: white;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+#close-popup:hover {
+    background-color: #900d36;
+}
