@@ -44,10 +44,10 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
             .style("width", "40px")
             .style("height", "auto")
             .on("mouseover", function(event) {
-                // Show tooltip with sitter name
+                // Show tooltip with sitter name and EDANurl
                 const tooltip = d3.select("#tooltip");
                 tooltip.style("opacity", 1)
-                    .text(d.Sitter)
+                    .html(`<div><strong>${d.Sitter}</strong></div><div style="font-size: 0.8em; color: #ccc;">${d.EDANurl}</div>`)
                     .style("left", `${event.clientX + 15}px`) // Use clientX for viewport-relative positioning
                     .style("top", `${event.clientY + 15}px`) // Use clientY for viewport-relative positioning
                     .style("z-index", 1000);
