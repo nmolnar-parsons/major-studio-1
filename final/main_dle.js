@@ -24,6 +24,49 @@ var incorrect_color = "#B31942";
 // Declare sitterData in a higher scope
 let sitterData;
 
+//Intro
+d3.csv("Data/method_faces.csv").then(function(data) {
+    // Display all faces in landing-background div
+    const landingDiv = d3.select("#landing-background")
+        .style("display", "flex")
+        .style("flex-direction", "column") // Stack rows vertically
+        .style("align-items", "center")
+        .style("position", "absolute")
+        .style("top", "0")
+        .style("left", "0")
+        .style("width", "100%")
+        .style("height", "100%")
+        .style("z-index", "-1");
+
+    // Create two rows for odd and even indexed faces
+    const oddRow = landingDiv.append("div")
+        .attr("id", "odd-row")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("flex-wrap", "wrap")
+        .style("margin-bottom", "60px"); // Space below the row
+
+    const evenRow = landingDiv.append("div")
+        .attr("id", "even-row")
+        .style("display", "flex")
+        .style("justify-content", "center")
+        .style("flex-wrap", "wrap")
+        .style("margin-top", "60px"); // Space above the row
+
+    // Append images to the appropriate row
+    data.forEach((d, i) => {
+        const targetRow = i % 2 === 0 ? oddRow : evenRow; // Odd-indexed faces go to oddRow, even-indexed to evenRow
+        targetRow.append("img")
+            .attr("src", d.face_urls)
+            .attr("alt", d.Sitter)
+            .attr("class", "landing-image")
+            .style("margin", "1px")
+            .style("border-radius", "5px")
+            .style("width", "auto")
+            .style("height", "250px");
+    });
+
+});
 
 //Gallery
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
@@ -281,14 +324,19 @@ function initializeGame(data) {
                         // Preload the portrait image before showing popup
                         const portraitImg = new Image();
                         portraitImg.onload = function() {
+                            // Update popupContent styling
                             const popupContent = `
                                 <button id="close-popup" class="close-btn">&times;</button>
                                 <div>
-                                    <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="max-width: 100%; border-radius: 10px;">
-                                    <h2>${sitterData.Sitter}</h2>
-                                    <p>Artist: ${(sitterData.Artist || "Unknown").replace(/\\u00e9/g, 'é')}</p>
+                                    <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}">
+                                </div>
+                                <div>
+                                    <h2>
+                                        <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.Sitter}</a>
+                                    </h2>
+                                    <p>Artist: ${sitterData.Artist || "Unknown"}</p>
                                     <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
-                                    <p style="font-size: 12px;">${targetSitter.description || "No description available"}</p>
+                                    <p>${targetSitter.description || "No description available"}</p>
                                 </div>
                             `;
                             d3.select("#sitter-popup-content").html(popupContent);
@@ -435,9 +483,13 @@ document.addEventListener("DOMContentLoaded", function() {
                         const popupContent = `
                             <button id="close-popup" class="close-btn">&times;</button>
                             <div>
-                                <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="max-width: 100%; border-radius: 10px;">
-                                <h2>${sitterData.Sitter}</h2>
-                                <p>Artist: ${(sitterData.Artist || "Unknown").replace(/\\u00e9/g, 'é')}</p>
+                                <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}">
+                            </div>
+                            <div>
+                                <h2>
+                                    <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.Sitter}</a>
+                                </h2>
+                                <p>Artist: ${sitterData.Artist || "Unknown"}</p>
                                 <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
                                 <p>${targetSitter.occupation || "Unknown"}</p>
                             </div>
