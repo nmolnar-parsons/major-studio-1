@@ -1,0 +1,209 @@
+[
+    {
+        "name": "Alexander Hamilton",
+        "first_initial": "A",
+        "last_initial": "H",
+        "occupation": "Politician",
+        "number_of_portraits": 9,
+        "length_of_name": 18,
+        "description": "Alexander Hamilton was one of the founding fathers of the United States and the first Secretary of the Treasury. He established the nation's financial system and was a key advocate for a strong federal government."
+    },
+    {
+        "name": "Anthony Wayne",
+        "first_initial": "A",
+        "last_initial": "W",
+        "occupation": "Military Officer",
+        "number_of_portraits": 5,
+        "length_of_name": 13,
+        "description": "Anthony Wayne was a Revolutionary War general known for his bold military tactics that earned him the nickname 'Mad Anthony.' He later led successful campaigns against Native American tribes in the Northwest Territory."
+    },
+    {
+        "name": "Benjamin Franklin",
+        "first_initial": "B",
+        "last_initial": "F",
+        "occupation": "Scientist",
+        "number_of_portraits": 27,
+        "length_of_name": 17,
+        "description": "Benjamin Franklin was a polymath who made significant contributions to science, diplomacy, and literature. He conducted groundbreaking experiments with electricity and played a crucial role in securing French support during the Revolutionary War."
+    },
+    {
+        "name": "Benjamin Thompson",
+        "first_initial": "B",
+        "last_initial": "T",
+        "occupation": "Physicist",
+        "number_of_portraits": 4,
+        "length_of_name": 18,
+        "description": "Benjamin Thompson, later Count Rumford, was an American-born physicist and inventor who made important discoveries about heat and thermodynamics. He fled to Europe during the Revolutionary War and became a prominent scientist in Bavaria and England."
+    },
+    {
+        "name": "Benjamin West",
+        "first_initial": "B",
+        "last_initial": "W",
+        "occupation": "Painter",
+        "number_of_portraits": 7,
+        "length_of_name": 13,
+        "description": "Benjamin West was an American-born artist who became one of the most influential painters of the 18th century. He was the first American to achieve international fame as an artist and served as president of the Royal Academy in London."
+    },
+    {
+        "name": "Charles Cotesworth Pinckney",
+        "first_initial": "C",
+        "last_initial": "P",
+        "occupation": "Diplomat",
+        "number_of_portraits": 5,
+        "length_of_name": 30,
+        "description": "Charles Cotesworth Pinckney was a South Carolina statesman and diplomat who played key roles in the Constitutional Convention. He later served as a minister to France and was involved in the XYZ Affair diplomatic incident."
+    },
+    {
+        "name": "Charles Willson Peale",
+        "first_initial": "C",
+        "last_initial": "P",
+        "occupation": "Artist",
+        "number_of_portraits": 3,
+        "length_of_name": 22,
+        "description": "Charles Willson Peale was an American painter best known for his portraits of leading figures of the American Revolution. He also founded one of the first museums in the United States and was an accomplished naturalist and inventor."
+    },
+    {
+        "name": "George Washington",
+        "first_initial": "G",
+        "last_initial": "W",
+        "occupation": "President",
+        "number_of_portraits": 76,
+        "length_of_name": 17,
+        "description": "George Washington was the first President of the United States and commander-in-chief of the Continental Army during the Revolutionary War. Known as the 'Father of His Country,' he established many precedents for the American presidency."
+    },
+    {
+        "name": "Henry Laurens",
+        "first_initial": "H",
+        "last_initial": "L",
+        "occupation": "Merchant",
+        "number_of_portraits": 4,
+        "length_of_name": 13,
+        "description": "Henry Laurens was a wealthy South Carolina merchant and planter who served as president of the Continental Congress. He was captured by the British while serving as a diplomat and spent over a year imprisoned in the Tower of London."
+    },
+    {
+        "name": "Horatio Gates",
+        "first_initial": "H",
+        "last_initial": "G",
+        "occupation": "General",
+        "number_of_portraits": 4,
+        "length_of_name": 13,
+        "description": "Horatio Gates was a British-born American general who achieved fame for his victory at the Battle of Saratoga. This triumph was crucial in convincing France to join the American cause in the Revolutionary War."
+    },
+    {
+        "name": "James Madison",
+        "first_initial": "J",
+        "last_initial": "M",
+        "occupation": "President",
+        "number_of_portraits": 6,
+        "length_of_name": 13,
+        "description": "James Madison was the fourth President of the United States and is known as the 'Father of the Constitution.' He played a pivotal role in drafting the Constitution and the Bill of Rights."
+    },
+    {
+        "name": "Joel Barlow",
+        "first_initial": "J",
+        "last_initial": "B",
+        "occupation": "Poet",
+        "number_of_portraits": 7,
+        "length_of_name": 11,
+        "description": "Joel Barlow was an American poet, diplomat, and political theorist associated with the Hartford Wits literary group. He wrote 'The Columbiad,' an epic poem celebrating American history and democratic ideals."
+    },
+    {
+        "name": "John Adams",
+        "first_initial": "J",
+        "last_initial": "A",
+        "occupation": "President",
+        "number_of_portraits": 9,
+        "length_of_name": 10,
+        "description": "John Adams was the second President of the United States and a key figure in the American Revolution. He served as a diplomat in Europe and was instrumental in negotiating the Treaty of Paris that ended the Revolutionary War."
+    },
+    {
+        "name": "John Dickinson",
+        "first_initial": "J",
+        "last_initial": "D",
+        "occupation": "Lawyer",
+        "number_of_portraits": 4,
+        "length_of_name": 14,
+        "description": "John Dickinson was a Pennsylvania lawyer and politician known as the 'Penman of the Revolution' for his influential political writings. He authored the 'Letters from a Farmer in Pennsylvania,' which helped galvanize colonial opposition to British taxation."
+    },
+    {
+        "name": "John Hancock",
+        "first_initial": "J",
+        "last_initial": "H",
+        "occupation": "Merchant",
+        "number_of_portraits": 9,
+        "length_of_name": 12,
+        "description": "John Hancock was a prominent Boston merchant and politician best known for his large, bold signature on the Declaration of Independence. He served as president of the Continental Congress and later as governor of Massachusetts."
+    },
+    {
+        "name": "John Jay",
+        "first_initial": "J",
+        "last_initial": "J",
+        "occupation": "Diplomat",
+        "number_of_portraits": 4,
+        "length_of_name": 8,
+        "description": "John Jay was a founding father who served as the first Chief Justice of the United States Supreme Court. He was also a skilled diplomat who helped negotiate the Treaty of Paris and later negotiated Jay's Treaty with Britain."
+    },
+    {
+        "name": "John Paul Jones",
+        "first_initial": "J",
+        "last_initial": "J",
+        "occupation": "Naval Officer",
+        "number_of_portraits": 5,
+        "length_of_name": 15,
+        "description": "John Paul Jones was a Scottish-American naval commander during the Revolutionary War, often called the 'Father of the American Navy.' He is famous for declaring 'I have not yet begun to fight!' during the naval battle with HMS Serapis."
+    },
+    {
+        "name": "John Quincy Adams",
+        "first_initial": "J",
+        "last_initial": "A",
+        "occupation": "President",
+        "number_of_portraits": 3,
+        "length_of_name": 17,
+        "description": "John Quincy Adams was the sixth President of the United States and the son of John Adams. Before his presidency, he served as a skilled diplomat and later became a vocal opponent of slavery in the House of Representatives."
+    },
+    {
+        "name": "Marquis de Lafayette",
+        "first_initial": "M",
+        "last_initial": "L",
+        "occupation": "Military Officer",
+        "number_of_portraits": 9,
+        "length_of_name": 20,
+        "description": "Marquis de Lafayette was a young French aristocrat who volunteered to fight for American independence during the Revolutionary War. He became a close friend and surrogate son to George Washington and played key roles in several important battles."
+    },
+    {
+        "name": "Nathanael Greene",
+        "first_initial": "N",
+        "last_initial": "G",
+        "occupation": "General",
+        "number_of_portraits": 7,
+        "length_of_name": 15,
+        "description": "Nathanael Greene was a Revolutionary War general who developed innovative military strategies in the Southern campaign. His tactical retreats and guerrilla warfare helped wear down British forces and contributed to American victory."
+    },
+    {
+        "name": "Samuel Adams",
+        "first_initial": "S",
+        "last_initial": "A",
+        "occupation": "Politician",
+        "number_of_portraits": 7,
+        "length_of_name": 12,
+        "description": "Samuel Adams was a political philosopher and one of the organizers of the Boston Tea Party. He was a master of political organization and propaganda, helping to build the revolutionary movement in Massachusetts."
+    },
+    {
+        "name": "Thomas Jefferson",
+        "first_initial": "T",
+        "last_initial": "J",
+        "occupation": "President",
+        "number_of_portraits": 22,
+        "length_of_name": 16,
+        "description": "Thomas Jefferson was the third President of the United States and the primary author of the Declaration of Independence. He doubled the size of the nation through the Louisiana Purchase and was a champion of individual liberty and limited government."
+    },
+    {
+        "name": "Thomas Paine",
+        "first_initial": "T",
+        "last_initial": "P",
+        "occupation": "Writer",
+        "number_of_portraits": 6,
+        "length_of_name": 12,
+        "description": "Thomas Paine was an English-American political activist and writer whose pamphlet 'Common Sense' inspired the American Revolution. His clear, passionate writing helped convince colonists to support independence from Britain."
+    }
+]
