@@ -26,45 +26,7 @@ let sitterData;
 
 //Intro
 d3.csv("Data/method_faces.csv").then(function(data) {
-    // Display all faces in landing-background div
-    const landingDiv = d3.select("#landing-background")
-        .style("display", "flex")
-        .style("flex-direction", "column") // Stack rows vertically
-        .style("align-items", "center")
-        .style("position", "absolute")
-        .style("top", "0")
-        .style("left", "0")
-        .style("width", "100%")
-        .style("height", "100%")
-        .style("z-index", "-1");
 
-    // Create two rows for odd and even indexed faces
-    const oddRow = landingDiv.append("div")
-        .attr("id", "odd-row")
-        .style("display", "flex")
-        .style("justify-content", "center")
-        .style("flex-wrap", "wrap")
-        .style("margin-bottom", "60px"); // Space below the row
-
-    const evenRow = landingDiv.append("div")
-        .attr("id", "even-row")
-        .style("display", "flex")
-        .style("justify-content", "center")
-        .style("flex-wrap", "wrap")
-        .style("margin-top", "60px"); // Space above the row
-
-    // Append images to the appropriate row
-    data.forEach((d, i) => {
-        const targetRow = i % 2 === 0 ? oddRow : evenRow; // Odd-indexed faces go to oddRow, even-indexed to evenRow
-        targetRow.append("img")
-            .attr("src", d.face_urls)
-            .attr("alt", d.Sitter)
-            .attr("class", "landing-image")
-            .style("margin", "1px")
-            .style("border-radius", "5px")
-            .style("width", "auto")
-            .style("height", "250px");
-    });
 
 });
 
@@ -72,7 +34,9 @@ d3.csv("Data/method_faces.csv").then(function(data) {
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
-    galleryDiv.append("h2").text("All Portraits");
+    galleryDiv.append("h2").text("These faces stare back at you, from the founding of the United States.");
+    galleryDiv.append("h3").text("How many can you recognize?");
+
 
     data.forEach(d => {
         const imageUrl = "Data/" + d.file_path;
@@ -90,7 +54,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                 // Show tooltip with sitter name and EDANurl
                 const tooltip = d3.select("#tooltip");
                 tooltip.style("opacity", 1)
-                    .html(`<div><strong>${d.Sitter}</strong></div><div style="font-size: 0.8em; color: #ccc;">${d.EDANurl}</div>`)
+                    .html(`<div><strong>${d.Sitter}</strong></div>`)
                     .style("left", `${event.clientX + 15}px`) // Use clientX for viewport-relative positioning
                     .style("top", `${event.clientY + 15}px`) // Use clientY for viewport-relative positioning
                     .style("z-index", 1000);
@@ -135,6 +99,12 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
             .style("outline", "none")
             .style("opacity", 1);
     });
+
+    galleryDiv.append("p")
+        .text("Try your skill below!")
+        .attr("class", "challenge-next")
+
+
 
 });
 
@@ -198,7 +168,9 @@ function initializeGame(data) {
             .attr("src", "Data/" + imageUrl)
             .attr("alt", sitterData.Sitter)
             .attr("width", width)
-            .attr("height", height);
+            .attr("height", height)
+            .style("border", "5px solid #0A3161") // Add a border around the image
+            .style("border-radius", "10px"); // Optional: Add rounded corners
     };
 
     //and consolelog their occupation, gender, and initials
@@ -215,7 +187,8 @@ function initializeGame(data) {
         .attr("type", "text")
         .attr("id", "input-datalist")
         .attr("class", "form-control")
-        .attr("placeholder", "Your guess here, please:")
+        .attr("placeholder", "Your guess here:")
+        .attr("font-family", "'Arial Black', Gadget, sans-serif")
         .attr("font-style", "italic")
         .attr("list", "sitter-names"); // Link to the datalist
 
@@ -248,8 +221,6 @@ function initializeGame(data) {
     // Reset reset button text
     d3.select("#reset").text("give up?");
 
-    // Remove any blue filter from gallery images
-    d3.selectAll(".gallery-image").style("filter", null);
 
     // Load sitter information from Sitter_Info.json and set up event listener
     d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
@@ -306,7 +277,9 @@ function initializeGame(data) {
                         .style("color", "white");
 
                     // Change reset text to "play again?"
-                    d3.select("#reset").text("play again?");
+                    setTimeout(() => {
+                        d3.select("#reset").text("play again?");
+                    }, 2000); // Delay of 1.5 seconds (adjust as needed)
                     
                     // Disable the input box
                     d3.select("#input-datalist").attr("disabled", true);
@@ -314,30 +287,45 @@ function initializeGame(data) {
                     // Prevent highlighting the next result box
                     guessCount = 6; // Set guessCount to max to stop further guesses
 
-                    // Apply a blue filter to all images of the guessed sitter in the "All Portraits" section
-                    d3.selectAll(`.gallery-image[data-sitter='${sitterData.Sitter}']`)
-                        .style("filter", "brightness(0.5) saturate(1.5) hue-rotate(200deg)");
-
 
                     // Show popup with thumbnail, sitter name, artist name, occupation, and date after 1.5 seconds
                     setTimeout(() => {
                         // Preload the portrait image before showing popup
                         const portraitImg = new Image();
                         portraitImg.onload = function() {
+                            // Select four random portraits of the sitter
+                            const sitterPortraits = gameData.filter(d => d.Sitter === sitterData.Sitter);
+                            const randomPortraits = sitterPortraits.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+                            // Generate HTML for the additional portraits
+                            const additionalPortraitsHTML = randomPortraits.map(portrait => `
+                                <a href="${portrait.collectionsURL}" target="_blank">
+                                    <img src="Data/${portrait.file_path}" alt="${sitterData.Sitter}" style="width: 100px; height: auto; margin: 5px;">
+                                </a>
+                            `).join("");
+
                             // Update popupContent styling
                             const popupContent = `
                                 <button id="close-popup" class="close-btn">&times;</button>
                                 <div>
-                                    <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}">
+                                    <a href="${sitterData.collectionsURL}" target="_blank">
+                                        <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="border: 5px solid #0A3161; border-radius: 10px;">
+                                    </a>
                                 </div>
                                 <div>
                                     <h2>
                                         <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.Sitter}</a>
                                     </h2>
+                                    <hr style="border: 1px solid #0A3161; margin: 10px 0;"> <!-- Add line separator -->
                                     <p>Artist: ${sitterData.Artist || "Unknown"}</p>
                                     <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
                                     <p>${targetSitter.description || "No description available"}</p>
+                                    <h3>Other portraits of ${sitterData.Sitter}:</h3>
+                                    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                                        ${additionalPortraitsHTML}
+                                    </div>
                                 </div>
+                          
                             `;
                             d3.select("#sitter-popup-content").html(popupContent);
                             d3.select("#sitter-popup").classed("hidden", false);
@@ -449,8 +437,6 @@ function resetGame() {
 
 //Game - Modified to use the new architecture
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
-    console.log(data);
-    
     // Store data globally for reset functionality
     gameData = data;
     
@@ -479,19 +465,31 @@ document.addEventListener("DOMContentLoaded", function() {
                     // Preload the portrait image before showing popup
                     const portraitImg = new Image();
                     portraitImg.onload = function() {
-                        // Create complete popup content similar to the winning scenario
+                        // Select four random portraits of the sitter
+                        const sitterPortraits = gameData.filter(d => d.Sitter === sitterData.Sitter);
+                        const randomPortraits = sitterPortraits.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+                        // Generate HTML for the additional portraits (no Smithsonian links)
+                        const additionalPortraitsHTML = randomPortraits.map(portrait => `
+                            <img src="Data/${portrait.file_path}" alt="${sitterData.Sitter}" style="width: 100px; height: auto; margin: 5px;">
+                        `).join("");
+
+                        // Create the popup content
                         const popupContent = `
                             <button id="close-popup" class="close-btn">&times;</button>
                             <div>
-                                <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}">
+                                <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="border: 5px solid #B31942; border-radius: 10px;">
                             </div>
                             <div>
-                                <h2>
-                                    <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.Sitter}</a>
-                                </h2>
+                                <h2>${sitterData.Sitter}</h2>
+                                <hr style="border: 1px solid #0A3161; margin: 10px 0;"> <!-- Add line separator -->
                                 <p>Artist: ${sitterData.Artist || "Unknown"}</p>
                                 <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
                                 <p>${targetSitter.occupation || "Unknown"}</p>
+                                <h3>Other portraits of ${sitterData.Sitter}:</h3>
+                                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                                    ${additionalPortraitsHTML}
+                                </div>
                             </div>
                         `;
                         
@@ -514,8 +512,11 @@ document.addEventListener("DOMContentLoaded", function() {
                     portraitImg.src = sitterData.thumbnail;
                 });
 
-                // Update the reset button text to "play again?"
-                d3.select("#reset").text("play again?");
+                // Update the reset button text to "play again?" after a delay
+                setTimeout(() => {
+                    d3.select("#reset").text("play again?");
+                }, 1500); // Delay of 1.5 seconds (adjust as needed)
+
             } else {
                 console.error("Sitter data is not available.");
             }
@@ -537,3 +538,32 @@ document.addEventListener("click", function(event) {
 
 // hints should be visually aligned so switching from one guest to next, everything is aligned
 // color all digits of the date green or red if correct or not
+
+// Landing page background images
+d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
+    const landingBackground = d3.select("#landing-background");
+
+    function generateImage() {
+        const randomFace = data[Math.floor(Math.random() * data.length)];
+        const imageUrl = "Data/" + randomFace.file_path;
+
+        const img = landingBackground.append("img")
+            .attr("src", imageUrl)
+            .attr("class", "landing-image")
+            .style("top", `${Math.random() * 70}%`) // Random vertical position
+            .style("left", `${Math.random() * 80}%`) // Random horizontal position
+            .style("opacity", 0.6)
+            .style("width", "200px") // Fixed width
+            .style("height", "auto")
+            .style("border-radius", "10px")
+
+        // Fade out and remove the image
+        img.transition()
+            .duration(18400) // 5 seconds fade-out
+            .style("opacity", 0)
+            .on("end", () => img.remove());
+    }
+
+    // Generate a new image every 1.5 seconds
+    setInterval(generateImage, 700);
+});

@@ -13,13 +13,20 @@ h1 {
     font-size: 60px;
 }
 
-#intro {
+#landing-page {
     display: flex;
+    flex-direction: column;
     justify-content: center;
     align-items: center;
-    height: 100%;
-    text-align: center;
-    margin: 0; /* Remove default margin to prevent overflow */
+    height: 100vh; /* Ensure the section fits within the viewport */
+    overflow: hidden; /* Prevent content overflow */
+    padding: 0 20px; /* Add padding to prevent content from touching edges */
+}
+
+#intro {
+    max-width: 80%; /* Reduce the width of the h1 to fit within boundaries */
+    padding: 10px 15px; /* Adjust padding for better fit */
+    box-sizing: border-box; /* Ensure padding is included in the element's size */
 }
 
 #title {
@@ -40,8 +47,7 @@ h1 {
     justify-content: flex-end; /* Align content (image) to the right */
     align-items: center; /* Vertically center the content */
     width: 364px; /* Fixed width */
-    height: 520px; /* Fixed height */
-    background-color: #f0f0f000; /* Placeholder background */
+    height: 525px; /* Fixed height */
 }
 
 #game_area {
@@ -125,9 +131,10 @@ h1 {
     min-height: 2rem;
 }
 
-input{
+input {
     font-size: 1.2rem;
-    min-width: 400px;
+    width: 712px; /* This sets the minimum width of the input box */
+    align-items: center;
     direction: ltr;
 }
 
@@ -146,7 +153,7 @@ input{
     justify-content: center;
     align-items: center;
     font-size: 1.5rem;
-    color: blue;
+    color: rgb(255, 255, 255);
     margin-top: 10px;
 }
 
@@ -220,7 +227,6 @@ input{
     flex-wrap: wrap;
     justify-content: center;
     align-items: center;
-    margin-top: 40px;
     padding: 20px;
 
     border-radius: 10px;
@@ -231,6 +237,12 @@ input{
     width: 100%;
     text-align: center;
     font-size: 1.8rem;
+    margin-bottom: 2px;
+}
+#portrait-gallery h3 {
+    width: 100%;
+    text-align: center;
+    font-size: 1.5rem;
     margin-bottom: 20px;
 }
 
@@ -239,7 +251,6 @@ input{
     border-radius: 5px;
     width: 100px;
     height: auto;
-    cursor: pointer;
     transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
@@ -305,12 +316,23 @@ input{
 }
 
 .page {
+    position: relative; /* Ensure relative positioning for pseudo-elements */
     height: 100vh;
     max-height: 100vh;
     width: 100%;
     max-width: 100vw;
     overflow: auto;
     box-sizing: border-box;
+}
+
+.page::after {
+    content: "";
+    position: absolute;
+    bottom: 10px; /* 10px above the end of the section */
+    left: 5%; /* Leave space on the sides */
+    right: 5%; /* Leave space on the sides */
+    height: 2px; /* Thin line */
+    background-color: black; /* Line color */
 }
 
 /* Ensure the first page section centers its content */
@@ -322,22 +344,22 @@ input{
 }
 
 #landing-background {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    align-items: center;
     position: absolute;
     top: 0;
     left: 0;
     width: 100%;
     height: 100%;
     z-index: -1; /* Send behind the intro text */
+    overflow: hidden;
 }
 
 .landing-image {
-    margin: 1px;
-    border-radius: 5px;
-    width: 30px;
+    position: absolute;
+    width: 300px; /* Large size for the images */
     height: auto;
+    opacity: 1;
+    transition: opacity 5s ease-out; /* Slow fade-out effect */
 }
+
+
 
