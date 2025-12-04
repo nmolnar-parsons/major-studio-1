@@ -1,22 +1,5 @@
 // Stuff to add
-
-
-    // landing page (maybe showing process of isolating faces from portraits)
-    
-    // intro page -> rework of page 2 of midterm
-        //introduction to all possible sitters
-
-    // page 3: all faces
-        // Layout of all faces isolated from portraits
-            // hover over face to see name
-        // occupations, name length filters
-        
-    
-    // page 4: game
-        // "learn more" button which links back to page 3
-        // add to win popup:
-            // sitter history, and more portraits of sitter
-
+    // add about this project to the footer at the end
 
 // Define constant for incorrect color
 var incorrect_color = "#B31942";
@@ -30,8 +13,9 @@ let sitterData;
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
-    galleryDiv.append("h2").text("Who are these guys?");
-    galleryDiv.append("h3").text("How many can you recognize?");
+    galleryDiv.append("h2").text("How many of these faces can you recognize?");
+    galleryDiv.append("h3").text("Faces were isolated from the Revolutionary Crossroads collection. Hover or click a face for more information. ");
+
 
     // Fetch sitter information
     d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
@@ -53,6 +37,44 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                 .style("border-radius", "5px")
                 .style("width", "40px")
                 .style("height", "auto")
+                .on("click", function(event) {
+                    // Prevent the click from bubbling to document listener
+                    event.stopPropagation();
+                    
+                    // Show popup with full portrait and isolated face
+                    const popupContent = `
+                        <button id="close-popup" class="close-btn">&times;</button>
+                        <div>
+                            <a href="${d.collectionsURL}" target="_blank">
+                                <img src="${d.thumbnail}" alt="${d.Sitter}" style="border: 5px solid #0A3161; border-radius: 10px;">
+                            </a>
+                        </div>
+                        <div>
+                            <div style="display: flex; justify-content: left;">
+                                <img src="Data/${d.file_path}" alt="${d.Sitter}" class="isolated-face-img" style="width: 200px; height: auto; border: 3px solid #0A3161; border-radius: 10px;">
+                            </div>
+                            <h2>
+                                <a href="${d.collectionsURL}" target="_blank">${d.title}</a>
+                            </h2>
+                            <hr style="border: 1px solid #0A3161; margin: 10px 0;">
+                            <p><strong>Sitter:</strong> ${d.Sitter}</p>
+                            <p><strong>Artist:</strong> ${d.Artist || "Unknown"}</p>
+                            <p><strong>Date:</strong> ${d.Clean_Date || "Unknown"}</p>
+                            <p><strong></strong> ${occupation}</p>
+                            
+                        </div>
+                    `;
+                    
+                    d3.select("#sitter-popup-content").html(popupContent);
+                    d3.select("#sitter-popup").classed("hidden", false);
+                    d3.select("body").style("overflow", "hidden");
+                    
+                    // Re-attach the close button event listener
+                    d3.select("#close-popup").on("click", function() {
+                        d3.select("#sitter-popup").classed("hidden", true);
+                        d3.select("body").style("overflow", "auto");
+                    });
+                })
                 .on("mouseover", function(event) {
                     // Show tooltip with sitter name, occupation, and date
                     const tooltip = d3.select("#tooltip");
@@ -95,10 +117,21 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                 });
         });
 
+
+
         // Append the <p> element after all portraits
         galleryDiv.append("p")
             .text("Try your skill below!")
             .attr("class", "challenge-next");
+        
+        // Add hovering arrow that scrolls to next section
+        galleryDiv.append("div")
+            .attr("class", "scroll-arrow")
+            .html("&#8595;") // Down arrow symbol
+            .on("click", function() {
+                // Scroll to the next section (game section)
+                document.querySelectorAll(".page")[2].scrollIntoView({ behavior: "smooth" });
+            });
     });
 
     // Add scroll event listener to hide tooltip when scrolling
@@ -318,14 +351,15 @@ function initializeGame(data) {
                                 </div>
                                 <div>
                                     <h2>
-                                        <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.Sitter}</a>
+                                        <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.title}</a>
                                     </h2>
                                     <hr style="border: 1px solid #0A3161; margin: 10px 0;"> <!-- Add line separator -->
-                                    <p>Artist: ${sitterData.Artist || "Unknown"}</p>
-                                    <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
+                                    <p><strong>Sitter:</strong> ${sitterData.Sitter}</p>
+                                    <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
+                                    <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
                                     <p>${targetSitter.description || "No description available"}</p>
                                     <h3>Other portraits of ${sitterData.Sitter}:</h3>
-                                    <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                                    <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #0A3161; padding: 5px; border-radius: 10px;">
                                         ${additionalPortraitsHTML}
                                     </div>
                                 </div>
@@ -413,8 +447,57 @@ function initializeGame(data) {
                 if (guessCount >= 6 && !isCorrect) {
                     setTimeout(() => {
                         if (sitterData) {
-                            d3.select("#sitter-name").text(`The sitter is: ${sitterData.Sitter}`);
-                            d3.select("#sitter-popup").classed("hidden", false);
+                            // Disable the input box when out of guesses
+                            d3.select("#input-datalist").attr("disabled", true);
+                            
+                            // Load sitter info to get occupation data
+                            d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
+                                const targetSitter = sitterInfoData.find(sitter => sitter.name === sitterData.Sitter);
+                                
+                                // Select random portraits of the sitter
+                                const sitterPortraits = gameData.filter(d => d.Sitter === sitterData.Sitter);
+                                const randomPortraits = sitterPortraits.sort(() => 0.5 - Math.random()).slice(0, 5);
+
+                                // Generate HTML for the additional portraits
+                                const additionalPortraitsHTML = randomPortraits.map(portrait => `
+                                    <img src="Data/${portrait.file_path}" alt="${sitterData.Sitter}" style="width: 100px; height: auto; margin: 5px;">
+                                `).join("");
+
+                                // Create the popup content
+                                const popupContent = `
+                                    <button id="close-popup" class="close-btn">&times;</button>
+                                    <div>
+                                        <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="border: 5px solid #B31942; border-radius: 10px;">
+                                    </div>
+                                    <div>
+                                        <h2>${sitterData.title}</h2>
+                                        <hr style="border: 1px solid #0A3161; margin: 10px 0;">
+                                        <p><strong>Sitter:</strong> ${sitterData.Sitter}</p>
+                                        <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
+                                        <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
+                                        <p>${targetSitter.occupation || "Unknown"}</p>
+                                        <p>Similar portraits of ${sitterData.Sitter}:</p>
+                                        <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #B31942; padding: 5px; border-radius: 10px;">
+                                            ${additionalPortraitsHTML}
+                                        </div>
+                                    </div>
+                                `;
+                                
+                                d3.select("#sitter-popup-content").html(popupContent);
+                                d3.select("#sitter-popup").classed("hidden", false);
+                                d3.select("body").style("overflow", "hidden");
+                                
+                                // Re-attach the close button event listener
+                                d3.select("#close-popup").on("click", function() {
+                                    d3.select("#sitter-popup").classed("hidden", true);
+                                    d3.select("body").style("overflow", "auto");
+                                });
+                            });
+
+                            // Update the reset button text to "play again?"
+                            d3.select("#reset")
+                                .text("play again?")
+                                .style("color", "#0A3161");
                         } else {
                             console.error("Sitter data is not available.");
                         }
@@ -485,13 +568,14 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="border: 5px solid #B31942; border-radius: 10px;">
                             </div>
                             <div>
-                                <h2>${sitterData.Sitter}</h2>
+                                <h2>${sitterData.title}</h2>
                                 <hr style="border: 1px solid #0A3161; margin: 10px 0;"> <!-- Add line separator -->
-                                <p>Artist: ${sitterData.Artist || "Unknown"}</p>
-                                <p>Date: ${sitterData.Clean_Date || "Unknown"}</p>
+                                <p><strong>Sitter:</strong> ${sitterData.Sitter}</p>
+                                <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
+                                <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
                                 <p>${targetSitter.occupation || "Unknown"}</p>
-                                <h3>Other portraits of ${sitterData.Sitter}:</h3>
-                                <div style="display: flex; flex-wrap: wrap; justify-content: center;">
+                                <p>Similar portraits of ${sitterData.Sitter}:</p>
+                                <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #B31942; padding: 5px; border-radius: 10px;">
                                     ${additionalPortraitsHTML}
                                 </div>
                             </div>
@@ -509,7 +593,6 @@ document.addEventListener("DOMContentLoaded", function() {
                         // Re-attach the close button event listener
                         d3.select("#close-popup").on("click", function() {
                             d3.select("#sitter-popup").classed("hidden", true);
-                            // Re-enable scrolling when popup is closed
                             d3.select("body").style("overflow", "auto");
                         });
                     };
@@ -558,7 +641,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
             .attr("class", "landing-image")
             .style("top", `${Math.random() * 70}%`) // Random vertical position
             .style("left", `${Math.random() * 80}%`) // Random horizontal position
-            .style("opacity", 0.6)
+            .style("opacity", 0.85)
             .style("width", "200px") // Fixed width
             .style("height", "auto")
             .style("border-radius", "10px")
@@ -572,4 +655,12 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
 
     // Generate a new image every 1.5 seconds
     setInterval(generateImage, 700);
+    landingBackground.append("div")
+        .text("Faces, once famous, now quite unrecognizable")
+        .style("text-align", "center")
+        .style("font-size", "1rem")
+        .style("max-width", "80%")
+        .style("z-index", "1")
+        .style("position", "relative")
+        .style("padding", "10px");
 });

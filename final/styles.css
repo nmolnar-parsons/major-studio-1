@@ -40,6 +40,10 @@ h1#title span {
     max-width: 80%; /* Reduce the width of the h1 to fit within boundaries */
     padding: 10px 15px; /* Adjust padding for better fit */
     box-sizing: border-box; /* Ensure padding is included in the element's size */
+    z-index: 1; /* Ensure it appears above background images */
+    position: relative;
+    text-align: center;
+    margin: 0;
 }
 
 #title {
@@ -249,6 +253,17 @@ input:disabled {
     margin: 0 auto;
 }
 
+#sitter-popup-content img {
+    width: 70%; /* Ensure the image takes up the desired width */
+    height: auto; /* Maintain aspect ratio */
+    object-fit: contain;
+    border-radius: 10px;
+    /* Center the image in the parent div */
+    display: block;
+    margin: 0 auto;
+}
+
+
 #sitter-popup.hidden {
     display: none;
 }
@@ -287,8 +302,9 @@ input:disabled {
 #portrait-gallery h3 {
     width: 100%;
     text-align: center;
-    font-size: 1.5rem;
+    font-size: 1rem;
     margin-bottom: 20px;
+    opacity: 0.4;
 }
 
 .gallery-image {
@@ -302,6 +318,7 @@ input:disabled {
 .gallery-image:hover {
     transform: scale(1.1);
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    cursor: pointer;
 }
 
 #tooltip {
@@ -396,6 +413,11 @@ input:disabled {
     height: 100%;
     z-index: -1; /* Send behind the intro text */
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 20px;
 }
 
 .landing-image {
@@ -408,3 +430,33 @@ input:disabled {
 
 
 
+
+.isolated-face-img {
+    display: left;
+    margin-right: auto;
+    margin-left: 0;
+}
+
+.scroll-arrow {
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    color: #0A3161;
+    cursor: pointer;
+}
+
+.scroll-arrow:hover {
+    color: #B31942;
+}
+
+@keyframes bounce {
+    0%, 20%, 50%, 80%, 100% {
+        transform: translateY(0);
+    }
+    40% {
+        transform: translateY(-15px);
+    }
+    60% {
+        transform: translateY(-7px);
+    }
+}
