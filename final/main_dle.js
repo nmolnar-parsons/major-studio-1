@@ -24,87 +24,92 @@ var incorrect_color = "#B31942";
 // Declare sitterData in a higher scope
 let sitterData;
 
-//Intro
-d3.csv("Data/method_faces.csv").then(function(data) {
 
-
-});
 
 //Gallery
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
-    galleryDiv.append("h2").text("These faces stare back at you, from the founding of the United States.");
+    galleryDiv.append("h2").text("Who are these guys?");
     galleryDiv.append("h3").text("How many can you recognize?");
 
+    // Fetch sitter information
+    d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
+        const sitterInfoMap = new Map(sitterInfoData.map(d => [d.name, d.occupation]));
 
-    data.forEach(d => {
-        const imageUrl = "Data/" + d.file_path;
+        // Sort data by date (earliest first)
+        const sortedData = data.sort((a, b) => d3.ascending(a.Clean_Date, b.Clean_Date));
 
-        galleryDiv.append("img")
-            .attr("src", imageUrl)
-            .attr("alt", d.Sitter)
-            .attr("class", "gallery-image")
-            .attr("data-sitter", d.Sitter) // Add data attribute for sitter name
-            .style("margin", "1px")
-            .style("border-radius", "5px")
-            .style("width", "40px")
-            .style("height", "auto")
-            .on("mouseover", function(event) {
-                // Show tooltip with sitter name and EDANurl
-                const tooltip = d3.select("#tooltip");
-                tooltip.style("opacity", 1)
-                    .html(`<div><strong>${d.Sitter}</strong></div>`)
-                    .style("left", `${event.clientX + 15}px`) // Use clientX for viewport-relative positioning
-                    .style("top", `${event.clientY + 15}px`) // Use clientY for viewport-relative positioning
-                    .style("z-index", 1000);
+        sortedData.forEach(d => {
+            const imageUrl = "Data/" + d.file_path;
+            const occupation = sitterInfoMap.get(d.Sitter) || "Unknown Occupation";
 
-                // Highlight all images of the same sitter
-                d3.selectAll(`.gallery-image[data-sitter='${d.Sitter}']`)
-                    .style("outline", "3px solid #0A3161")
-                    .style("outline-offset", "1px");
+            galleryDiv.append("img")
+                .attr("src", imageUrl)
+                .attr("alt", d.Sitter)
+                .attr("class", "gallery-image")
+                .attr("data-sitter", d.Sitter) // Add data attribute for sitter name
+                .style("margin", "1px")
+                .style("border-radius", "5px")
+                .style("width", "40px")
+                .style("height", "auto")
+                .on("mouseover", function(event) {
+                    // Show tooltip with sitter name, occupation, and date
+                    const tooltip = d3.select("#tooltip");
+                    tooltip.style("opacity", 1)
+                        .html(`<div><strong>${d.Sitter}</strong></div>
+                               <div>${occupation}</div>
+                               <div>${d.Clean_Date || "Unknown"}</div>`)
+                        .style("left", `${event.clientX + 15}px`) // Use clientX for viewport-relative positioning
+                        .style("top", `${event.clientY + 15}px`) // Use clientY for viewport-relative positioning
+                        .style("z-index", 1000);
 
-                //lower opacity of other images
-                d3.selectAll(".gallery-image")
-                    .filter(function() {
-                        return d3.select(this).attr("data-sitter") !== d.Sitter;
-                    })
-                    .style("opacity", 0.75);
-            })
-            .on("mousemove", function(event) {
-                // Update tooltip position on mouse move using viewport coordinates
-                const tooltip = d3.select("#tooltip");
-                tooltip.style("left", `${event.clientX + 15}px`)
-                    .style("top", `${event.clientY + 15}px`);
-            })
-            .on("mouseout", function() {
-                // Hide tooltip
-                d3.select("#tooltip").style("opacity", 0);
+                    // Highlight all images of the same sitter
+                    d3.selectAll(`.gallery-image[data-sitter='${d.Sitter}']`)
+                        .style("outline", "3px solid #0A3161")
+                        .style("outline-offset", "1px");
 
-                // Remove highlight from all images
-                d3.selectAll(".gallery-image")
-                    .style("outline", "none");
-                // Reset opacity of all images
-                d3.selectAll(".gallery-image")
-                    .style("opacity", 1);
-            });
+                    // Lower opacity of other images
+                    d3.selectAll(".gallery-image")
+                        .filter(function() {
+                            return d3.select(this).attr("data-sitter") !== d.Sitter;
+                        })
+                        .style("opacity", 0.75);
+                })
+                .on("mousemove", function(event) {
+                    // Update tooltip position on mouse move using viewport coordinates
+                    const tooltip = d3.select("#tooltip");
+                    tooltip.style("left", `${event.clientX + 15}px`)
+                        .style("top", `${event.clientY + 15}px`);
+                })
+                .on("mouseout", function() {
+                    // Hide tooltip
+                    d3.select("#tooltip").style("opacity", 0);
+
+                    // Remove highlight from all images
+                    d3.selectAll(".gallery-image")
+                        .style("outline", "none");
+                    // Reset opacity of all images
+                    d3.selectAll(".gallery-image")
+                        .style("opacity", 1);
+                });
+        });
+
+        // Append the <p> element after all portraits
+        galleryDiv.append("p")
+            .text("Try your skill below!")
+            .attr("class", "challenge-next");
     });
 
     // Add scroll event listener to hide tooltip when scrolling
     window.addEventListener("scroll", function() {
         d3.select("#tooltip").style("opacity", 0);
-        
+
         // Also remove any highlights when scrolling
         d3.selectAll(".gallery-image")
             .style("outline", "none")
             .style("opacity", 1);
     });
-
-    galleryDiv.append("p")
-        .text("Try your skill below!")
-        .attr("class", "challenge-next")
-
-
 
 });
 
@@ -124,16 +129,13 @@ function initializeGame(data) {
     sitters = Array.from(new Set(data.map(d => d.Sitter)));
     //organize sitter list alphabetically
     sitters.sort();
-    console.log(sitters);
 
     // Select a random EDANurl
     const edanUrls = Array.from(new Set(data.map(d => d.EDANurl)));
     const randomEDANurl = edanUrls[Math.floor(Math.random() * edanUrls.length)];
-    console.log("Random EDANurl: " + randomEDANurl);
 
     // Assign the data for the selected EDANurl to the higher scoped sitterData
     sitterData = data.find(d => d.EDANurl === randomEDANurl);
-    console.log(sitterData);
     if (!sitterData) {
         console.error("No data found for the selected random EDANurl.");
         return;
@@ -148,7 +150,6 @@ function initializeGame(data) {
             sitterCounts[d.Sitter] = 1;
         }
     });
-    console.log("Sitter counts:", sitterCounts);
 
     //put sitter face in <div id="face-image"></div>
     const face_div = d3.select("#face-image");
@@ -161,7 +162,7 @@ function initializeGame(data) {
     tempImage.src = "Data/" + imageUrl;
     tempImage.onload = function() {
         const aspectRatio = tempImage.width / tempImage.height;
-        const height = 520; // Fixed height
+        const height = 580; // Fixed height
         const width = height * aspectRatio; // Calculate width based on aspect ratio
 
         face_div.append("img")
@@ -219,10 +220,11 @@ function initializeGame(data) {
     }
 
     // Reset reset button text
-    d3.select("#reset").text("give up?");
+    d3.select("#reset")
+        .text("give up?")
+        .style("color", incorrect_color);
 
-
-    // Load sitter information from Sitter_Info.json and set up event listener
+// Load sitter information from Sitter_Info.json and set up event listener
     d3.json("Data/sitter_info.json").then(function(sitterInfoData) {
         // Add event listener for the input box
         d3.select("#input-datalist").on("change", function() {
@@ -278,7 +280,9 @@ function initializeGame(data) {
 
                     // Change reset text to "play again?"
                     setTimeout(() => {
-                        d3.select("#reset").text("play again?");
+                        d3.select("#reset")
+                            .text("play again?")
+                            .style("color", "#0A3161");
                     }, 2000); // Delay of 1.5 seconds (adjust as needed)
                     
                     // Disable the input box
@@ -514,7 +518,9 @@ document.addEventListener("DOMContentLoaded", function() {
 
                 // Update the reset button text to "play again?" after a delay
                 setTimeout(() => {
-                    d3.select("#reset").text("play again?");
+                    d3.select("#reset")
+                        .text("play again?")
+                        .style("color", "#0A3161");
                 }, 1500); // Delay of 1.5 seconds (adjust as needed)
 
             } else {

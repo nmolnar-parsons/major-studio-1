@@ -13,6 +13,19 @@ h1 {
     font-size: 60px;
 }
 
+#title {
+    display: inline; /* or inline-block */
+}
+
+#title span {
+    display: inline;
+    vertical-align: baseline; /* Ensures alignment with parent text */
+}
+
+h1#title span {
+    display: inline !important;
+}
+
 #landing-page {
     display: flex;
     flex-direction: column;
@@ -47,7 +60,7 @@ h1 {
     justify-content: flex-end; /* Align content (image) to the right */
     align-items: center; /* Vertically center the content */
     width: 364px; /* Fixed width */
-    height: 525px; /* Fixed height */
+    height: 515px; /* Fixed height */
 }
 
 #game_area {
@@ -64,12 +77,20 @@ h1 {
     flex-direction: column;
 }
 
+#input-area {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+
+}
+
 #input-boxes {
     display: flex;
     flex-direction: column;
     align-items: left;
     margin-left: 5px;
     min-width: 2.5 * var(--box-width);
+    flex: 1;
 }
 
 .result-box {
@@ -133,9 +154,23 @@ h1 {
 
 input {
     font-size: 1.2rem;
-    width: 712px; /* This sets the minimum width of the input box */
+    width: 356px; /* This sets the minimum width of the input box */
     align-items: center;
     direction: ltr;
+    text-align: center;
+    background-color: white;
+    border: 2px solid #0A3161;
+    border-radius: 5px;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+input:disabled {
+    background-color: #d3d3d3;
+    color: #808080;
+    cursor: not-allowed;
+    opacity: 0.6;
 }
 
 #legend {
@@ -152,14 +187,24 @@ input {
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 1.5rem;
     color: rgb(255, 255, 255);
-    margin-top: 10px;
+    background-color: white;
+    border: 2px solid #0A3161;
+    border-radius: 5px;
+    cursor: pointer;
+    font-family: 'Arial Black', Gadget, sans-serif;
+    font-size: 1.2rem;
+    white-space: nowrap;
+    width: 355px;
+    padding: 10px;
+    box-sizing: border-box;
+    height: auto;
 }
 
 #reset:hover {
     cursor: pointer;
     text-decoration: underline;
+    background-color: #b6b6b6;
 }
 
 #sitter-popup {
@@ -261,7 +306,7 @@ input {
 
 #tooltip {
     position: fixed;
-    background-color: rgba(0, 0, 0, 0.9);
+    background-color: #0A3161;
     color: white;
     padding: 8px 12px;
     border-radius: 6px;
