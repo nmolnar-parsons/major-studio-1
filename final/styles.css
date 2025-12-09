@@ -4,7 +4,7 @@
 
 
 body{
-    font-family: 'Arial Black', Gadget, sans-serif;
+    font-family: 'Arial', Gadget, sans-serif;
     background-color: rgb(208, 199, 199);
 }
 
@@ -33,7 +33,6 @@ h1#title span {
     align-items: center;
     height: 100vh; /* Ensure the section fits within the viewport */
     overflow: hidden; /* Prevent content overflow */
-    padding: 0 20px; /* Add padding to prevent content from touching edges */
 }
 
 #intro {
@@ -44,6 +43,8 @@ h1#title span {
     position: relative;
     text-align: center;
     margin: 0;
+    /* add a shadow to the text for better visibility */ 
+    text-shadow: 2px 2px 4px rgba(255, 255, 255, 0.5);
 }
 
 #title {
@@ -387,7 +388,7 @@ input:disabled {
     box-sizing: border-box;
 }
 
-.page::after {
+.page:not(:last-child)::after {
     content: "";
     position: absolute;
     bottom: 10px; /* 10px above the end of the section */
@@ -408,8 +409,7 @@ input:disabled {
 #landing-background {
     position: absolute;
     top: 0;
-    left: 0;
-    width: 100%;
+    width: 100vw;
     height: 100%;
     z-index: -1; /* Send behind the intro text */
     overflow: hidden;
@@ -417,12 +417,13 @@ input:disabled {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    gap: 20px;
+    /* gap: 20px; */
+    overflow: hidden;
 }
 
 .landing-image {
     position: absolute;
-    width: 300px; /* Large size for the images */
+    /* width: 300px; Large size for the images */
     height: auto;
     opacity: 1;
     transition: opacity 5s ease-out; /* Slow fade-out effect */
@@ -448,6 +449,52 @@ input:disabled {
 .scroll-arrow:hover {
     color: #B31942;
 }
+
+#landing-background {
+    width: 100vw; /* Ensure it spans the full viewport width */
+    left: 0; /* Reset any unintended offset */
+}
+
+#landing-page, #landing-background {
+    padding: 0;
+    margin: 0;
+}
+
+#tooltip {
+    position: fixed;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 5px;
+    pointer-events: none;
+    opacity: 0;
+    max-width: 200px;
+    word-wrap: break-word;
+    white-space: normal;
+    z-index: 1000;
+}
+
+footer {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 10px;
+}
+
+
+footer p {
+    text-align: left;
+    font-size: 0.8rem;
+    color: #333;
+
+}
+#about {
+    color: #0A3161;
+    text-decoration: none;
+    font-weight: bold;
+    margin-right: 10px;
+    font-size: 1.5rem;
+}
+
 
 @keyframes bounce {
     0%, 20%, 50%, 80%, 100% {

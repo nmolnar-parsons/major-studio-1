@@ -7,14 +7,94 @@ var incorrect_color = "#B31942";
 // Declare sitterData in a higher scope
 let sitterData;
 
+// do this first for faster loading?
 
+// Landing page background images
+d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
+    const landingBackground = d3.select("#landing-background");
+
+    const rows = Array.from({ length: 6 }, (_, i) => i);
+    let recentlyUsedRows = [];
+    let imageIntervalId; // Store interval ID
+    let isTabActive = true; // Track tab visibility
+
+    function getAvailableRow() {
+        const availableRows = rows.filter(row => !recentlyUsedRows.includes(row));
+        if (availableRows.length === 0) {
+            recentlyUsedRows = [];
+            return rows[Math.floor(Math.random() * rows.length)];
+        }
+        return availableRows[Math.floor(Math.random() * availableRows.length)];
+    }
+
+    function generateImage() {
+        const randomFace = data[Math.floor(Math.random() * data.length)];
+        const imageUrl = "Data/" + randomFace.file_path;
+
+        const row = getAvailableRow();
+        recentlyUsedRows.push(row);
+        if (recentlyUsedRows.length > 2) {
+            recentlyUsedRows.shift();
+        }
+
+        const columnWidth = window.innerWidth / 6;
+        const portraitWidth = columnWidth * 0.8;
+
+        const img = landingBackground.append("img")
+            .attr("src", imageUrl)
+            .attr("class", "landing-image")
+            .style("position", "absolute")
+            .style("top", "-40px")
+            .style("left", `${row * columnWidth + (columnWidth - portraitWidth) / 2}px`)
+            .style("opacity", 0.95)
+            .style("width", `${portraitWidth}px`)
+            .style("height", "auto")
+            .style("border-radius", "10px");
+
+        img.transition()
+            .duration(10000)
+            .ease(d3.easeLinear)
+            .style("top", "100%")
+            .style("opacity", 0)
+            .on("end", () => img.remove());
+    }
+
+    // Start the interval
+    imageIntervalId = setInterval(generateImage, 1000);
+
+    // Listen for visibility changes
+    document.addEventListener("visibilitychange", function() {
+        if (document.hidden) {
+            // Tab is hidden - clear the interval
+            clearInterval(imageIntervalId);
+            isTabActive = false;
+        } else {
+            // Tab is visible - restart the interval
+            isTabActive = true;
+            imageIntervalId = setInterval(generateImage, 1500);
+        }
+    });
+
+
+
+
+    landingBackground.append("div")
+        .text("How many Founding Fathers can you recognize?")
+        .style("text-align", "center")
+        .style("font-size", "1rem")
+        .style("max-width", "80%")
+        .style("z-index", "1")
+        .style("position", "relative")
+        .style("padding", "10px")
+        .style("text-shadow", "2px 2px 4px #ffffffff");
+});
 
 //Gallery
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
-    galleryDiv.append("h2").text("How many of these faces can you recognize?");
-    galleryDiv.append("h3").text("Faces were isolated from the Revolutionary Crossroads collection. Hover or click a face for more information. ");
+    galleryDiv.append("h2").html("<strong>How many of these faces can you recognize?</strong>");
+    galleryDiv.append("h3").html("Faces were isolated from the <a target='_blank' rel='noopener noreferrer' href = 'https://huggingface.co/RevolutionCrossroads'>Revolution Crossroads</a> collection. Hover or click a face for more information. ");
 
 
     // Fetch sitter information
@@ -60,7 +140,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                             <p><strong>Sitter:</strong> ${d.Sitter}</p>
                             <p><strong>Artist:</strong> ${d.Artist || "Unknown"}</p>
                             <p><strong>Date:</strong> ${d.Clean_Date || "Unknown"}</p>
-                            <p><strong></strong> ${occupation}</p>
+                            <p>${occupation}</p>
                             
                         </div>
                     `;
@@ -82,9 +162,30 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                         .html(`<div><strong>${d.Sitter}</strong></div>
                                <div>${occupation}</div>
                                <div>${d.Clean_Date || "Unknown"}</div>`)
-                        .style("left", `${event.clientX + 15}px`) // Use clientX for viewport-relative positioning
-                        .style("top", `${event.clientY + 15}px`) // Use clientY for viewport-relative positioning
                         .style("z-index", 1000);
+
+                    // Calculate tooltip position with viewport constraints
+                    const tooltipNode = tooltip.node();
+                    const tooltipWidth = tooltipNode.offsetWidth;
+                    const tooltipHeight = tooltipNode.offsetHeight;
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    let left = event.clientX + 15;
+                    let top = event.clientY + 15;
+                    
+                    // Adjust horizontal position if tooltip goes off right edge
+                    if (left + tooltipWidth > viewportWidth) {
+                        left = event.clientX - tooltipWidth - 15;
+                    }
+                    
+                    // Adjust vertical position if tooltip goes off bottom edge
+                    if (top + tooltipHeight > viewportHeight) {
+                        top = event.clientY - tooltipHeight - 15;
+                    }
+                    
+                    tooltip.style("left", `${left}px`)
+                        .style("top", `${top}px`);
 
                     // Highlight all images of the same sitter
                     d3.selectAll(`.gallery-image[data-sitter='${d.Sitter}']`)
@@ -99,10 +200,29 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                         .style("opacity", 0.75);
                 })
                 .on("mousemove", function(event) {
-                    // Update tooltip position on mouse move using viewport coordinates
+                    // Update tooltip position on mouse move with viewport constraints
                     const tooltip = d3.select("#tooltip");
-                    tooltip.style("left", `${event.clientX + 15}px`)
-                        .style("top", `${event.clientY + 15}px`);
+                    const tooltipNode = tooltip.node();
+                    const tooltipWidth = tooltipNode.offsetWidth;
+                    const tooltipHeight = tooltipNode.offsetHeight;
+                    const viewportWidth = window.innerWidth;
+                    const viewportHeight = window.innerHeight;
+                    
+                    let left = event.clientX + 15;
+                    let top = event.clientY + 15;
+                    
+                    // Adjust horizontal position if tooltip goes off right edge
+                    if (left + tooltipWidth > viewportWidth) {
+                        left = event.clientX - tooltipWidth - 15;
+                    }
+                    
+                    // Adjust vertical position if tooltip goes off bottom edge
+                    if (top + tooltipHeight > viewportHeight) {
+                        top = event.clientY - tooltipHeight - 15;
+                    }
+                    
+                    tooltip.style("left", `${left}px`)
+                        .style("top", `${top}px`);
                 })
                 .on("mouseout", function() {
                     // Hide tooltip
@@ -358,7 +478,7 @@ function initializeGame(data) {
                                     <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
                                     <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
                                     <p>${targetSitter.description || "No description available"}</p>
-                                    <h3>Other portraits of ${sitterData.Sitter}:</h3>
+                                    <h3><strong>Other faces of ${sitterData.Sitter}:</strong></h3>
                                     <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #0A3161; padding: 5px; border-radius: 10px;">
                                         ${additionalPortraitsHTML}
                                     </div>
@@ -374,7 +494,6 @@ function initializeGame(data) {
                             // Add event listener for the close button
                             d3.select("#close-popup").on("click", function() {
                                 d3.select("#sitter-popup").classed("hidden", true);
-                                // Re-enable scrolling when popup is closed
                                 d3.select("body").style("overflow", "auto");
                             });
                         };
@@ -476,7 +595,7 @@ function initializeGame(data) {
                                         <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
                                         <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
                                         <p>${targetSitter.occupation || "Unknown"}</p>
-                                        <p>Similar portraits of ${sitterData.Sitter}:</p>
+                                        <p><strong>Other portraits of ${sitterData.Sitter}:</strong></p>
                                         <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #B31942; padding: 5px; border-radius: 10px;">
                                             ${additionalPortraitsHTML}
                                         </div>
@@ -574,7 +693,7 @@ document.addEventListener("DOMContentLoaded", function() {
                                 <p><strong>Artist:</strong> ${sitterData.Artist || "Unknown"}</p>
                                 <p><strong>Date:</strong> ${sitterData.Clean_Date || "Unknown"}</p>
                                 <p>${targetSitter.occupation || "Unknown"}</p>
-                                <p>Similar portraits of ${sitterData.Sitter}:</p>
+                                <p><strong>Other faces of ${sitterData.Sitter}:</strong></p>
                                 <div style="display: flex; flex-wrap: wrap; justify-content: center; border: 3px solid #B31942; padding: 5px; border-radius: 10px;">
                                     ${additionalPortraitsHTML}
                                 </div>
@@ -627,40 +746,3 @@ document.addEventListener("click", function(event) {
 
 // hints should be visually aligned so switching from one guest to next, everything is aligned
 // color all digits of the date green or red if correct or not
-
-// Landing page background images
-d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
-    const landingBackground = d3.select("#landing-background");
-
-    function generateImage() {
-        const randomFace = data[Math.floor(Math.random() * data.length)];
-        const imageUrl = "Data/" + randomFace.file_path;
-
-        const img = landingBackground.append("img")
-            .attr("src", imageUrl)
-            .attr("class", "landing-image")
-            .style("top", `${Math.random() * 70}%`) // Random vertical position
-            .style("left", `${Math.random() * 80}%`) // Random horizontal position
-            .style("opacity", 0.85)
-            .style("width", "200px") // Fixed width
-            .style("height", "auto")
-            .style("border-radius", "10px")
-
-        // Fade out and remove the image
-        img.transition()
-            .duration(18400) // 5 seconds fade-out
-            .style("opacity", 0)
-            .on("end", () => img.remove());
-    }
-
-    // Generate a new image every 1.5 seconds
-    setInterval(generateImage, 700);
-    landingBackground.append("div")
-        .text("Faces, once famous, now quite unrecognizable")
-        .style("text-align", "center")
-        .style("font-size", "1rem")
-        .style("max-width", "80%")
-        .style("z-index", "1")
-        .style("position", "relative")
-        .style("padding", "10px");
-});
