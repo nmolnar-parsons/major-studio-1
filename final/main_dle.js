@@ -93,8 +93,8 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
 d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
-    galleryDiv.append("h2").html("<strong>How many of these faces can you recognize?</strong>");
-    galleryDiv.append("h3").html("Faces were isolated from the <a target='_blank' rel='noopener noreferrer' href = 'https://huggingface.co/RevolutionCrossroads'>Revolution Crossroads</a> collection. Hover or click a face for more information. ");
+    galleryDiv.append("h2").html("<strong>How many of these faces can you recognize?</strong>").attr("class", "section-title");
+    galleryDiv.append("h3").html("Portraits are valuable records of faces from the Revolutionary Period. Hover or click a face for more information. ");
 
 
     // Fetch sitter information
@@ -125,7 +125,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                     const popupContent = `
                         <button id="close-popup" class="close-btn">&times;</button>
                         <div>
-                            <a href="${d.collectionsURL}" target="_blank">
+                            <a href="${d.collectionsURL}" target="_blank" style="color: black; text-decoration: underline;">
                                 <img src="${d.thumbnail}" alt="${d.Sitter}" style="border: 5px solid #0A3161; border-radius: 10px;">
                             </a>
                         </div>
@@ -134,7 +134,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
                                 <img src="Data/${d.file_path}" alt="${d.Sitter}" class="isolated-face-img" style="width: 200px; height: auto; border: 3px solid #0A3161; border-radius: 10px;">
                             </div>
                             <h2>
-                                <a href="${d.collectionsURL}" target="_blank">${d.title}</a>
+                                <a href="${d.collectionsURL}" target="_blank" style="color: black; text-decoration: underline;">${d.title}</a>
                             </h2>
                             <hr style="border: 1px solid #0A3161; margin: 10px 0;">
                             <p><strong>Sitter:</strong> ${d.Sitter}</p>
@@ -372,9 +372,19 @@ function initializeGame(data) {
         });
     }
 
+    // Create hint arrow element (hidden by default)
+    result_div.append("div")
+        .attr("id", "hint-arrow")
+        .attr("class", "hint-arrow hidden")
+        .html("&#8593;<br>need a hint?")
+        .on("click", function() {
+            // Scroll to the gallery section
+            document.querySelectorAll(".page")[1].scrollIntoView({ behavior: "smooth" });
+        });
+
     // Reset reset button text
     d3.select("#reset")
-        .text("give up?")
+        .text("stumped?")
         .style("color", incorrect_color);
 
 // Load sitter information from Sitter_Info.json and set up event listener
@@ -431,6 +441,12 @@ function initializeGame(data) {
                         .style("background-color", "#0A3161")
                         .style("color", "white");
 
+                    // fade out hint arrow on correct guess
+                    d3.select("#hint-arrow")
+                        .transition()
+                        .duration(500)
+                        .style("opacity", 0)
+
                     // Change reset text to "play again?"
                     setTimeout(() => {
                         d3.select("#reset")
@@ -456,7 +472,7 @@ function initializeGame(data) {
 
                             // Generate HTML for the additional portraits
                             const additionalPortraitsHTML = randomPortraits.map(portrait => `
-                                <a href="${portrait.collectionsURL}" target="_blank">
+                                <a href="${portrait.collectionsURL}" target="_blank" style="color: black; text-decoration: underline;">
                                     <img src="Data/${portrait.file_path}" alt="${sitterData.Sitter}" style="width: 100px; height: auto; margin: 5px;">
                                 </a>
                             `).join("");
@@ -465,13 +481,13 @@ function initializeGame(data) {
                             const popupContent = `
                                 <button id="close-popup" class="close-btn">&times;</button>
                                 <div>
-                                    <a href="${sitterData.collectionsURL}" target="_blank">
+                                    <a href="${sitterData.collectionsURL}" target="_blank" style="color: black; text-decoration: underline;">
                                         <img src="${sitterData.thumbnail}" alt="${sitterData.Sitter}" style="border: 5px solid #0A3161; border-radius: 10px;">
                                     </a>
                                 </div>
                                 <div>
                                     <h2>
-                                        <a href="${sitterData.collectionsURL}" target="_blank">${sitterData.title}</a>
+                                        <a href="${sitterData.collectionsURL}" target="_blank" style="color: black; text-decoration: underline;">${sitterData.title}</a>
                                     </h2>
                                     <hr style="border: 1px solid #0A3161; margin: 10px 0;"> <!-- Add line separator -->
                                     <p><strong>Sitter:</strong> ${sitterData.Sitter}</p>
@@ -557,6 +573,16 @@ function initializeGame(data) {
                         d3.selectAll(`${nextResultBoxId} .hint-box`)
                             .classed("inactive", false)
                             .classed("active", true);
+
+                        // Show hint arrow after third incorrect guess
+                        if (guessCount === 3) {
+                            d3.select("#hint-arrow")
+                                .classed("hidden", false)
+                                .style("opacity", 0)
+                                .transition()
+                                .duration(500)
+                                .style("opacity", 1);
+                        }
                     }
                 }, totalFadeDuration);
 

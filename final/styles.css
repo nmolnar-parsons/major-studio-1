@@ -13,6 +13,10 @@ h1 {
     font-size: 60px;
 }
 
+.section-title {
+    font-family: Snell Roundhand, cursive;
+}
+
 #title {
     display: inline; /* or inline-block */
 }
@@ -391,9 +395,9 @@ input:disabled {
 .page:not(:last-child)::after {
     content: "";
     position: absolute;
-    bottom: 10px; /* 10px above the end of the section */
-    left: 5%; /* Leave space on the sides */
-    right: 5%; /* Leave space on the sides */
+    bottom: 0px; /* 10px above the end of the section */
+    left: 2%; /* Leave space on the sides */
+    right: 2%; /* Leave space on the sides */
     height: 2px; /* Thin line */
     background-color: black; /* Line color */
 }
@@ -506,4 +510,31 @@ footer p {
     60% {
         transform: translateY(-7px);
     }
+}
+
+#hint-arrow {
+    position: absolute;
+    right: 10px;
+    top: 490px;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: #0A3161;
+    font-weight: bold;
+    text-align: center;
+    line-height: 1.2;
+    transition: opacity 0.5s ease;
+}
+
+#hint-arrow:hover {
+    transform: scale(1.1);
+    color: #B31942;
+}
+
+#hint-arrow.hidden {
+    display: none;
+    opacity: 0;
+}
+
+#result-box-4 {
+    position: relative;
 }
