@@ -79,7 +79,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
 
 
     landingBackground.append("div")
-        .text("How many Founding Fathers can you recognize?")
+        .text("A Face Guessing Game for the Revolutionary American")
         .style("text-align", "center")
         .style("font-size", "1rem")
         .style("max-width", "80%")
@@ -94,7 +94,7 @@ d3.csv("Data/highcount_Use_hosted.csv").then(function(data) {
     // Add a section below the game to show all portrait faces
     const galleryDiv = d3.select("#portrait-gallery");
     galleryDiv.append("h2").html("<strong>How many of these faces can you recognize?</strong>").attr("class", "section-title");
-    galleryDiv.append("h3").html("Portraits are valuable records of faces from the Revolutionary Period. Hover or click a face for more information. ");
+    galleryDiv.append("h3").html("Portraits captured the likeness of important figures in Revolutionary America. <br> Through clothing, setting, and pose, the portrait's sitter attempted to higlight certain aspects of their identity. <br> If this context is removed, can you recognize them by face alone?");
 
 
     // Fetch sitter information
